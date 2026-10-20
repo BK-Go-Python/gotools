@@ -33,6 +33,7 @@ go get github.com/BK-Go-Python/gotools
 | `random` | `Seed`/`Float`/`Randint`/`Randrange`/`Choice`/`Shuffle`/`Sample` |
 | `re` | `Match`/`Search`/`FindAll`/`Sub`/`Split`/`Compile`（Go RE2） |
 | `statistics` | `Mean`/`Median`/`Mode`/`Variance`/`Stdev` 等 |
+| `env` | `os.environ` 风格：Get/Set/Unset/Has/All/Expand |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
 | `conv` | `int/float/bool/str/bytes/bytearray/complex` 转换、JSON、struct ↔ map |
@@ -118,7 +119,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/pathlib.md`](docs/pathlib.md)，随机数见
 [`docs/random.md`](docs/random.md)，正则见
 [`docs/re.md`](docs/re.md)，统计见
-[`docs/statistics.md`](docs/statistics.md)。
+[`docs/statistics.md`](docs/statistics.md)，环境变量见
+[`docs/env.md`](docs/env.md)。
 
 ### 命名约定
 
@@ -157,7 +159,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
