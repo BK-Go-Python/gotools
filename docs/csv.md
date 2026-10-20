@@ -16,11 +16,16 @@ fmt.Println(rows[0]["a"]) // 1
 | `csv.reader(f)` | `csv.NewReader(r)` / `csv.Read(r)` |
 | `csv.writer(f)` | `csv.NewWriter(w)` / `csv.Write(w, records)` |
 | `csv.DictReader(f)` | `csv.ReadDicts(r)` / `csv.ReadDictsFile(path)` |
+| `csv.DictWriter(f, fieldnames)` | `csv.NewDictWriter(w, fieldnames)` |
+| `writer.writeheader()` / `writer.writerow(row)` | `WriteHeader` / `Write` |
+| `writer.writerows(rows)` | `WriteAll` |
+| 一步写表头+数据 | `csv.WriteDicts` / `csv.WriteDictsFile` |
 | 文件读写 | `csv.ReadFile` / `csv.WriteFile` |
 
 ## DIFF
 
 - `DictReader` 的额外字段被忽略，Python 默认放到 `None` 键下。
+- `DictWriter` 缺失字段写空字符串；Python 默认抛 `ValueError`（可用 `restval` 指定默认值）。
 - 没有 `DictWriter`、`Sniffer`、`Dialect` 注册表。
 - `Reader` 的 `FieldsPerRecord` 默认与 `encoding/csv` 一致：以第一行为准。
 - `Writer` 默认 CRLF；需要 LF 时调用 `SetUseCRLF(false)`。
