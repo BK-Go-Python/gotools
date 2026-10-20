@@ -180,6 +180,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `count`/`index`/切片/下标读写 | `Count`、`Index`、`Slice`、`Get`、`Set` | 支持 | 负数下标与 Python 一致 |
 | `replace`/`upper`/`lower`/`decode` | `Replace`、`Upper`、`Lower`、`Decode` | 支持 | replace 原地；upper/lower 只处理 ASCII；decode 仅 UTF-8 |
 | `repr` | `Repr` | 支持 | 输出 `bytearray(b'...')` |
+| bytes 常用方法 | `Strip/Lstrip/Rstrip/StripChars`、`Startswith/Endswith`、`Find/Rfind/Rindex`、`Split/SplitN/RSplit/Splitlines`、`Join`、`Center/Ljust/Rjust/Zfill/Expandtabs`、`Capitalize/Title/Swapcase`、`RemovePrefix/Removesuffix`、`Translate/Hex`、`Is*` | 支持 | 直接复用 `conv.Bytes_*` 的语义；返回新的 ByteArray |
 
 ## 三个重点差异
 
