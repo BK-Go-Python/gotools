@@ -148,7 +148,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.split(sep)`、`bytes.join(parts)` | `conv.Bytes_split`、`conv.Bytes_join` | 支持 | `sep` 为空返回 error；返回新切片 |
 | `bytes.find/sub in b/count` | `conv.Bytes_index`、`conv.Bytes_contains`、`conv.Bytes_count` | 支持 | Index 未找到返回 -1；Count 空 sub 为 len(data)+1 |
 | `bytes.replace(old, new[, count])` | `conv.Bytes_replace` | 支持 | 空 old 按字节边界插入 |
-| `bytes.startswith(prefix)`、`bytes.endswith(suffix)` | `conv.Bytes_startswith`、`conv.Bytes_endswith` | 支持 | 单前缀/后缀；不支持元组 |
+| `bytes.startswith(prefixes)`、`bytes.endswith(suffixes)` | `conv.Bytes_startswith(prefixes...)`、`Bytes_endswith(suffixes...)` | 支持 | 变参表达元组，任一匹配即 true |
 | `bytes.find(sub)`、`bytes.rfind(sub)` | `conv.Bytes_find`、`conv.Bytes_rfind` | 支持 | 未找到返回 -1 |
 | `bytes.partition(sep)`、`bytes.rpartition(sep)` | `conv.Bytes_partition`、`conv.Bytes_rpartition` | 部分 | 未找到返回 (data,nil,nil)/(nil,nil,data)；空 sep 不报错 |
 | `bytes.splitlines()` | `conv.Bytes_splitlines` | 支持 | 按 \n、\r、\r\n 切分，不保留行尾 |
@@ -159,6 +159,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.center`、`ljust`、`rjust` | `conv.Bytes_center`、`Bytes_ljust`、`Bytes_rjust` | 支持 | width 按字节计，fill 为单字节 |
 | `bytes.expandtabs(tabsize=8)` | `conv.Bytes_expandtabs` | 支持 | 按字节列宽计算；tabsize<=0 删除制表符 |
 | `bytes.split(sep, maxsplit)`、`rsplit` | `conv.Bytes_split_n`、`Bytes_rsplit` | 支持 | sep 为空返回 error；返回独立切片 |
+| `bytes.isalnum/isalpha/isdigit/isspace/islower/isupper/istitle/isascii` | `conv.Bytes_isalnum`、`Bytes_isalpha`、`Bytes_isdigit`、`Bytes_isspace`、`Bytes_islower`、`Bytes_isupper`、`Bytes_istitle`、`Bytes_isascii` | 支持 | 非 ASCII 字节不参与大小写判断；`isascii` 空输入为 true |
 
 ### collections
 

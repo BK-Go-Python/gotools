@@ -2,14 +2,26 @@ package conv
 
 import "bytes"
 
-// Bytes_startswith 等价于 Python 的 bytes.startswith(prefix)。
-func Bytes_startswith(data, prefix []byte) bool {
-	return bytes.HasPrefix(data, prefix)
+// Bytes_startswith 等价于 Python 的 bytes.startswith(prefixes)：
+// 任一前缀匹配即返回 true；不传前缀返回 false。
+func Bytes_startswith(data []byte, prefixes ...[]byte) bool {
+	for _, prefix := range prefixes {
+		if bytes.HasPrefix(data, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
-// Bytes_endswith 等价于 Python 的 bytes.endswith(suffix)。
-func Bytes_endswith(data, suffix []byte) bool {
-	return bytes.HasSuffix(data, suffix)
+// Bytes_endswith 等价于 Python 的 bytes.endswith(suffixes)：
+// 任一后缀匹配即返回 true；不传后缀返回 false。
+func Bytes_endswith(data []byte, suffixes ...[]byte) bool {
+	for _, suffix := range suffixes {
+		if bytes.HasSuffix(data, suffix) {
+			return true
+		}
+	}
+	return false
 }
 
 // Bytes_find 等价于 Python 的 bytes.find(sub)，未找到返回 -1。
