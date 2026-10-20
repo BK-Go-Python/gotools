@@ -39,6 +39,7 @@ go get github.com/BK-Go-Python/gotools
 | `urllib` | `Quote`/`Unquote`/`QuotePlus`/`Encode`/`ParseQuery`/`Join` |
 | `html` | `Escape`/`Unescape`（Python html.escape 语义） |
 | `base64` | `B64encode`/`B64decode`/`Urlsafe_b64encode`/`Urlsafe_b64decode` |
+| `logging` | `New`/`Logger`、`Debug/Info/Warning/Error/Critical` |
 | `subprocess` | `Run`/`CheckOutput`/`CheckCall`/`RunShell`（命令执行） |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
@@ -132,7 +133,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/subprocess.md`](docs/subprocess.md)，文件操作见
 [`docs/file.md`](docs/file.md)，URL 工具见
 [`docs/urllib.md`](docs/urllib.md)，HTML/Base64 见
-[`docs/html.md`](docs/html.md)、[`docs/base64.md`](docs/base64.md)。
+[`docs/html.md`](docs/html.md)、[`docs/base64.md`](docs/base64.md)，日志见
+[`docs/logging.md`](docs/logging.md)。
 
 ### 命名约定
 
@@ -171,7 +173,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ html/ base64/ subprocess/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ html/ base64/ logging/ subprocess/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
