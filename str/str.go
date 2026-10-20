@@ -1,60 +1,66 @@
+// Package str 提供 Python str 风格的方法：大小写转换、裁剪、分割、查找、
+// 判断、对齐填充、切片以及 str.format 风格的字符串格式化。
+//
+// 所有函数都以 rune（字符）为单位处理字符串，因此中文、emoji 等
+// 多字节字符的行为与 Python 3 一致，而不是按字节处理。
+//
+// 该包不依赖任何第三方库。
 package str
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 )
 
-//非数值或字符类型的变量将会被转换成JSON格式字符串
+// Str 把任意值转换为字符串。
+//
+// 数值按十进制输出，字符串原样返回，[]byte 转成 string；其他类型会尝试
+// 序列化为 JSON，失败时退化为 fmt.Sprint。nil 返回空字符串。
+//
+// 这是项目最早提供的函数，行为偏 Go 习惯；如果需要 Python str() 的
+// 语义（None、True/False、带引号的容器），请使用 py.Str。
 func Str(value interface{}) string {
-	var key string
-	if value == nil {
-		return key
-	}
-	switch value.(type) {
-	case float64:
-		ft := value.(float64)
-		key = strconv.FormatFloat(ft, 'f', -1, 64)
-	case float32:
-		ft := value.(float32)
-		key = strconv.FormatFloat(float64(ft), 'f', -1, 64)
-	case int:
-		it := value.(int)
-		key = strconv.Itoa(it)
-	case uint:
-		it := value.(uint)
-		key = strconv.Itoa(int(it))
-	case int8:
-		it := value.(int8)
-		key = strconv.Itoa(int(it))
-	case uint8:
-		it := value.(uint8)
-		key = strconv.Itoa(int(it))
-	case int16:
-		it := value.(int16)
-		key = strconv.Itoa(int(it))
-	case uint16:
-		it := value.(uint16)
-		key = strconv.Itoa(int(it))
-	case int32:
-		it := value.(int32)
-		key = strconv.Itoa(int(it))
-	case uint32:
-		it := value.(uint32)
-		key = strconv.Itoa(int(it))
-	case int64:
-		it := value.(int64)
-		key = strconv.FormatInt(it, 10)
-	case uint64:
-		it := value.(uint64)
-		key = strconv.FormatUint(it, 10)
+	switch v := value.(type) {
+	case nil:
+		return ""
 	case string:
-		key = value.(string)
+		return v
 	case []byte:
-		key = string(value.([]byte))
+		return string(v)
+	case float64:
+		return strconv.FormatFloat(v, 'f', -1, 64)
+	case float32:
+		return strconv.FormatFloat(float64(v), 'f', -1, 32)
+	case int:
+		return strconv.Itoa(v)
+	case int8:
+		return strconv.FormatInt(int64(v), 10)
+	case int16:
+		return strconv.FormatInt(int64(v), 10)
+	case int32:
+		return strconv.FormatInt(int64(v), 10)
+	case int64:
+		return strconv.FormatInt(v, 10)
+	case uint:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint8:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint16:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint32:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint64:
+		return strconv.FormatUint(v, 10)
+	case uintptr:
+		return strconv.FormatUint(uint64(v), 10)
+	case bool:
+		return strconv.FormatBool(v)
 	default:
-		newValue, _ := json.Marshal(value)
-		key = string(newValue)
+		data, err := json.Marshal(v)
+		if err != nil {
+			return fmt.Sprint(v)
+		}
+		return string(data)
 	}
-	return key
 }
