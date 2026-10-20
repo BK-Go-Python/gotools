@@ -27,9 +27,9 @@ func ExampleSum() {
 	// 4
 }
 
-func ExampleSortedOf() {
+func ExampleSorted() {
 	nums := []int{3, 1, 2}
-	sorted := py.SortedOf(nums)
+	sorted := py.Sorted(nums)
 	fmt.Println(sorted)
 	fmt.Println(nums)
 	// Output:

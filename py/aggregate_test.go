@@ -87,7 +87,7 @@ func TestExistingAggregates(t *testing.T) {
 	if got := Len("你好"); got != 2 {
 		t.Fatalf("Len = %d, want 2", got)
 	}
-	if got := Sorted([]int{3, 1, 2}).Join(","); got != "1,2,3" {
+	if got := SortedAny([]int{3, 1, 2}).Join(","); got != "1,2,3" {
 		t.Fatalf("Sorted = %q, want 1,2,3", got)
 	}
 	if got := Sum([]int{1, 2, 3}); got != 6 {
@@ -101,5 +101,28 @@ func TestExistingAggregates(t *testing.T) {
 	}
 	if got, err := Max([]int{3, 1, 2}); err != nil || got != 3 {
 		t.Fatalf("Max = (%v,%v), want (3,nil)", got, err)
+	}
+}
+
+type namedOrdered []int
+
+func TestMinMaxSortedGeneric(t *testing.T) {
+	if got, err := Min(namedOrdered{3, 1, 2}); err != nil || got != 1 {
+		t.Fatalf("Min named = (%v,%v)", got, err)
+	}
+	if got, err := Max(namedOrdered{3, 1, 2}); err != nil || got != 3 {
+		t.Fatalf("Max named = (%v,%v)", got, err)
+	}
+	if got := Sorted(namedOrdered{3, 1, 2}); !slices.Equal(got, []int{1, 2, 3}) {
+		t.Fatalf("Sorted named = %v", got)
+	}
+	if got := Sorted([]int(nil)); got == nil || len(got) != 0 {
+		t.Fatalf("Sorted nil = %v", got)
+	}
+	if _, err := Min([]int{}); !errors.Is(err, ErrEmpty) {
+		t.Fatalf("Min empty err = %v", err)
+	}
+	if _, err := MaxAny([]interface{}{3, 1, 2}); err != nil {
+		t.Fatalf("MaxAny = %v", err)
 	}
 }

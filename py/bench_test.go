@@ -34,14 +34,14 @@ func BenchmarkSum(b *testing.B) {
 	benchmarkSumSink = total
 }
 
-func BenchmarkSortedOf(b *testing.B) {
+func BenchmarkSorted(b *testing.B) {
 	seq := benchmarkInts(1024)
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	var sorted []int
 	for i := 0; i < b.N; i++ {
-		sorted = py.SortedOf(seq)
+		sorted = py.Sorted(seq)
 	}
 	benchmarkIntsSink = sorted
 }

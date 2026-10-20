@@ -243,13 +243,21 @@ func SumAny(iterable interface{}) (float64, error) {
 	return total, nil
 }
 
-// Min 等价于 Python 的 min(iterable[, key])。
-func Min(iterable interface{}, key ...func(interface{}) interface{}) (interface{}, error) {
+// MinAny 是动态版 min(iterable[, key])：接受任意可迭代对象，可选 key 函数。
+//
+// 新代码优先使用泛型 Min；异构 iterable 或需要 key 时才使用 MinAny。
+//
+// Python: min(iterable, key=...)
+func MinAny(iterable interface{}, key ...func(interface{}) interface{}) (interface{}, error) {
 	return extreme(iterable, key, true)
 }
 
-// Max 等价于 Python 的 max(iterable[, key])。
-func Max(iterable interface{}, key ...func(interface{}) interface{}) (interface{}, error) {
+// MaxAny 是动态版 max(iterable[, key])：接受任意可迭代对象，可选 key 函数。
+//
+// 新代码优先使用泛型 Max；异构 iterable 或需要 key 时才使用 MaxAny。
+//
+// Python: max(iterable, key=...)
+func MaxAny(iterable interface{}, key ...func(interface{}) interface{}) (interface{}, error) {
 	return extreme(iterable, key, false)
 }
 
@@ -257,9 +265,9 @@ func extreme(iterable interface{}, key []func(interface{}) interface{}, wantMin 
 	items := mustIter(iterable)
 	if len(items) == 0 {
 		if wantMin {
-			return nil, fmt.Errorf("py.Min(): arg is an empty sequence")
+			return nil, fmt.Errorf("py.MinAny(): arg is an empty sequence")
 		}
-		return nil, fmt.Errorf("py.Max(): arg is an empty sequence")
+		return nil, fmt.Errorf("py.MaxAny(): arg is an empty sequence")
 	}
 	best := items[0]
 	bestKey := best
@@ -384,10 +392,11 @@ func Reduce(fn func(acc, item interface{}) interface{}, iterable interface{}, in
 	return acc
 }
 
-// Sorted 等价于 Python 的 sorted(iterable)，返回新的 List。
+// SortedAny 是动态版 sorted(iterable)，返回新的 List。
 //
 // 可选的 less 参数用于自定义比较，例如按字符串长度排序。
-func Sorted(iterable interface{}, less ...func(a, b interface{}) bool) list.List {
+// 新代码优先使用泛型 Sorted；异构 iterable 或需要自定义 less 时才使用 SortedAny。
+func SortedAny(iterable interface{}, less ...func(a, b interface{}) bool) list.List {
 	out := list.New(mustIter(iterable)...)
 	if len(less) > 0 && less[0] != nil {
 		out.Sort(less[0])

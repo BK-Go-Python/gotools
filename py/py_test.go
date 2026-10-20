@@ -86,7 +86,7 @@ func TestFunctionalHelpers(t *testing.T) {
 		t.Fatalf("Reduce initial = %v", got)
 	}
 
-	if got := Sorted([]int{3, 1, 2}).Join(","); got != "1,2,3" {
+	if got := SortedAny([]int{3, 1, 2}).Join(","); got != "1,2,3" {
 		t.Fatalf("Sorted = %q", got)
 	}
 	if got := Reversed([]int{1, 2, 3}).Join(","); got != "3,2,1" {
