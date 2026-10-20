@@ -160,6 +160,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.expandtabs(tabsize=8)` | `conv.Bytes_expandtabs` | 支持 | 按字节列宽计算；tabsize<=0 删除制表符 |
 | `bytes.split(sep, maxsplit)`、`rsplit` | `conv.Bytes_split_n`、`Bytes_rsplit` | 支持 | sep 为空返回 error；返回独立切片 |
 | `bytes.isalnum/isalpha/isdigit/isspace/islower/isupper/istitle/isascii` | `conv.Bytes_isalnum`、`Bytes_isalpha`、`Bytes_isdigit`、`Bytes_isspace`、`Bytes_islower`、`Bytes_isupper`、`Bytes_istitle`、`Bytes_isascii` | 支持 | 非 ASCII 字节不参与大小写判断；`isascii` 空输入为 true |
+| `bytes.translate(table, delete)`、`bytes.maketrans(from, to)` | `conv.Bytes_translate`、`Bytes_maketrans` | 支持 | table 为 `[256]byte`；delete 为变参字节集合；from/to 长度必须相等 |
 
 ### collections
 
