@@ -45,6 +45,7 @@ go get github.com/BK-Go-Python/gotools
 | `sys` | `Args`/`Exit`/`Getpid`/`Getcwd`/`Chdir`/`Platform` 等 |
 | `shutil` | `Copy`/`Copy2`/`Copytree`/`Rmtree`/`Move`/`Which`/`DiskUsage` |
 | `signal` | `Notify`/`Stop`/`Ignore`/`Reset`/`NotifyContext` |
+| `httpclient` | `Get`/`Post`/`PostJSON`/`GetJSON`/`Request` |
 | `subprocess` | `Run`/`CheckOutput`/`CheckCall`/`RunShell`（命令执行） |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
@@ -144,7 +145,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/string.md`](docs/string.md)，脚本/系统接口见
 [`docs/sys.md`](docs/sys.md)，文件树工具见
 [`docs/shutil.md`](docs/shutil.md)，信号处理见
-[`docs/signal.md`](docs/signal.md)。
+[`docs/signal.md`](docs/signal.md)，HTTP 请求见
+[`docs/httpclient.md`](docs/httpclient.md)。
 
 ### 命名约定
 
@@ -183,7 +185,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ html/ base64/ logging/ textwrap/ string/ sys/ shutil/ signal/ subprocess/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ html/ base64/ logging/ textwrap/ string/ sys/ shutil/ signal/ httpclient/ subprocess/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
