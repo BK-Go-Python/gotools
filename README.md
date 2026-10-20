@@ -40,6 +40,7 @@ go get github.com/BK-Go-Python/gotools
 | `html` | `Escape`/`Unescape`（Python html.escape 语义） |
 | `base64` | `B64encode`/`B64decode`/`Urlsafe_b64encode`/`Urlsafe_b64decode` |
 | `logging` | `New`/`Logger`、`Debug/Info/Warning/Error/Critical` |
+| `textwrap` | `Wrap`/`Fill`/`Dedent`/`Indent`/`Shorten` |
 | `subprocess` | `Run`/`CheckOutput`/`CheckCall`/`RunShell`（命令执行） |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
@@ -134,7 +135,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/file.md`](docs/file.md)，URL 工具见
 [`docs/urllib.md`](docs/urllib.md)，HTML/Base64 见
 [`docs/html.md`](docs/html.md)、[`docs/base64.md`](docs/base64.md)，日志见
-[`docs/logging.md`](docs/logging.md)。
+[`docs/logging.md`](docs/logging.md)，文本换行见
+[`docs/textwrap.md`](docs/textwrap.md)。
 
 ### 命名约定
 
@@ -173,7 +175,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ html/ base64/ logging/ subprocess/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ html/ base64/ logging/ textwrap/ subprocess/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
