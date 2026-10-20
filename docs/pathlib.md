@@ -24,7 +24,11 @@ matches, err := p.Parent().Glob("*.json")
 | `p.iterdir()` / `p.glob("*.go")` | `Iterdir` / `Glob` |
 | `p.stat().st_size` | `Size` |
 | `p.touch()` / `p.rename()` / `p.unlink()` / `p.rmdir()` | `Touch` / `Rename` / `Unlink` / `Rmdir` |
-| `p.resolve()` | `Abs` |
+| `p.resolve()` | `Resolve` / `Abs` |
+| `p.relative_to(other)` / `p.is_relative_to(other)` | `Relative_to` / `Is_relative_to` |
+| `p.with_name("x")` | `With_name` |
+| `p.match("*.txt")` | `Match` |
+| `p.rglob("*.txt")` | `Rglob` |
 
 ## DIFF
 
@@ -33,3 +37,6 @@ matches, err := p.Parent().Glob("*.json")
 - `Glob` 底层是 `filepath.Glob`，语法与 Python `pathlib` 基本一致，但 `**` 递归语义不同。
 - `ReadText/WriteText` 固定 UTF-8；其他编码需要显式转换。
 - `Path` 是 string 的具名类型，不做路径规范化；`New` 使用 `filepath.Join`。
+- `Resolve` 在路径不存在时返回绝对路径（strict=False 语义），不报错。
+- `Rglob` 使用 `filepath.WalkDir`，匹配规则是 `filepath.Match`，`**` 语义与 Python 不同。
+- `With_name` 只替换最后一段；名称含 `/` 或 `\` 时返回 error。
