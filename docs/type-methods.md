@@ -154,6 +154,11 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.splitlines()` | `conv.Bytes_splitlines` | 支持 | 按 \n、\r、\r\n 切分，不保留行尾 |
 | `bytes.capitalize()`、`title()`、`swapcase()` | `conv.Bytes_capitalize`、`Bytes_title`、`Bytes_swapcase` | 支持 | 仅 ASCII 字母转换，0x80 以上字节不变 |
 | `bytes.zfill(width)` | `conv.Bytes_zfill` | 支持 | 保留开头 +/- 符号位置 |
+| `bytes.strip([chars])`、`lstrip`、`rstrip` | `conv.Bytes_strip_chars`、`Bytes_lstrip`/`Bytes_rstrip`、`Bytes_lstrip_chars`/`Bytes_rstrip_chars` | 支持 | 默认 ASCII 空白；chars 按字节集合处理 |
+| `bytes.removeprefix`、`removesuffix` | `conv.Bytes_removeprefix`、`Bytes_removesuffix` | 支持 | 返回新切片 |
+| `bytes.center`、`ljust`、`rjust` | `conv.Bytes_center`、`Bytes_ljust`、`Bytes_rjust` | 支持 | width 按字节计，fill 为单字节 |
+| `bytes.expandtabs(tabsize=8)` | `conv.Bytes_expandtabs` | 支持 | 按字节列宽计算；tabsize<=0 删除制表符 |
+| `bytes.split(sep, maxsplit)`、`rsplit` | `conv.Bytes_split_n`、`Bytes_rsplit` | 支持 | sep 为空返回 error；返回独立切片 |
 
 ### collections
 
