@@ -16,7 +16,7 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
       - name: gofmt
-        run: test -z "$(gofmt -l str list dict set collections bytearray itertools functools json pathlib random re statistics env csv datetime urllib html base64 logging textwrap string sys shutil signal httpclient subprocess py conv time hash file internal)"
+        run: test -z "$(gofmt -l str list dict set collections bytearray itertools functools json pathlib random re statistics env csv datetime urllib html base64 logging textwrap string sys shutil signal httpclient ospath subprocess py conv time hash file internal)"
       - name: vet
         run: go vet ./...
       - name: test
