@@ -140,12 +140,10 @@ gotools/
 ├── str/ list/ dict/ set/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
-├── goblog/              # 独立的 beego 博客示例模块，不属于工具库
 ├── go.mod
 └── README.md
 ```
 
-`goblog/` 有自己的 `go.mod`，根模块的 `go test ./...` 不会包含它。
 
 ## License
 
