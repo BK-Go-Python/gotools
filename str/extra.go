@@ -11,10 +11,8 @@ import (
 // DIFF: Go 没有完整的 Unicode case folding 表；这里覆盖了常见特殊映射
 // （ß/ẞ → ss、İ → i + U+0307），其余字符退化为 ToLower。
 func Casefold(s string) string {
-	s = strings.ReplaceAll(s, "ß", "ss")
-	s = strings.ReplaceAll(s, "ẞ", "ss")
 	s = strings.ReplaceAll(s, "İ", "i\u0307")
-	return strings.ToLower(s)
+	return casefoldSpecial(strings.ToLower(s))
 }
 
 // Expandtabs 等价于 Python 的 s.expandtabs(tabsize=8)。
@@ -65,7 +63,9 @@ func IsIdentifier(s string) bool {
 			}
 			continue
 		}
-		if r != '_' && !unicode.IsLetter(r) && !unicode.IsDigit(r) {
+		if r != '_' && !unicode.IsLetter(r) && !unicode.IsDigit(r) &&
+			!unicode.Is(unicode.Nl, r) && !unicode.Is(unicode.Mn, r) &&
+			!unicode.Is(unicode.Mc, r) && !unicode.Is(unicode.Pc, r) {
 			return false
 		}
 	}

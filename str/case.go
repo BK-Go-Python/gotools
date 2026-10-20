@@ -10,7 +10,7 @@ import (
 // DIFF: Go 的简单大小写映射不做多字符展开；这里额外处理了常见的 ß→SS，
 // 其余完整 Unicode 特殊映射（连字等）尚未覆盖。
 func Upper(s string) string {
-	return strings.ReplaceAll(strings.ToUpper(s), "ß", "SS")
+	return upperSpecial(strings.ToUpper(s))
 }
 
 // Lower 等价于 Python 的 s.lower()。
@@ -38,6 +38,9 @@ func Capitalize(s string) string {
 		return ""
 	}
 	r := []rune(s)
+	if expanded, ok := titleLigature(r[0]); ok {
+		return expanded + strings.ToLower(string(r[1:]))
+	}
 	if r[0] == 'ß' {
 		return "Ss" + strings.ToLower(string(r[1:]))
 	}
@@ -59,6 +62,8 @@ func Title(s string) string {
 		if unicode.IsLetter(r) {
 			if prevLetter {
 				b.WriteRune(unicode.ToLower(r))
+			} else if expanded, ok := titleLigature(r); ok {
+				b.WriteString(expanded)
 			} else if r == 'ß' {
 				b.WriteString("Ss")
 			} else {
@@ -78,11 +83,11 @@ func Swapcase(s string) string {
 	var b strings.Builder
 	b.Grow(len(s))
 	for _, r := range s {
+		if expanded, ok := swapcaseSpecial(r); ok {
+			b.WriteString(expanded)
+			continue
+		}
 		switch {
-		case r == 'ß':
-			b.WriteString("SS")
-		case r == 'İ':
-			b.WriteString("i\u0307")
 		case unicode.IsUpper(r):
 			b.WriteRune(unicode.ToLower(r))
 		case unicode.IsLower(r):

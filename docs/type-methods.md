@@ -19,12 +19,12 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 
 | Python 类型/方法 | gotools API | 状态 | 主要 DIFF |
 |---|---|---|---|
-| `upper()` | `str.Upper(s string) string` | 部分 | Go 使用简单大小写映射；仅额外补了 `ß → SS`，连字、希腊字母等完整 SpecialCasing 未覆盖 |
+| `upper()` | `str.Upper(s string) string` | 部分 | Go 简单映射 + 常见特殊映射（ß→SS、ﬀ/ﬁ/ﬂ/ﬃ/ﬄ/ﬅ/ﬆ 连字）；完整 SpecialCasing 仍未覆盖 |
 | `lower()` | `str.Lower(s string) string` | 部分 | 简单映射；仅补了 `İ → i + U+0307`，上下文相关规则不完整 |
 | `capitalize()` | `str.Capitalize(s string) string` | 部分 | 首字符 titlecase、其余 lower；仅特判 `ß`，不是完整 case mapping |
 | `title()` | `str.Title(s string) string` | 部分 | 用 `unicode.IsLetter` 判断词边界；titlecase 字母和特殊展开可能与 Python 不同 |
 | `swapcase()` | `str.Swapcase(s string) string` | 部分 | 逐 rune 简单切换；仅特判 `ß`/`İ`，多字符映射缺失 |
-| `casefold()` | `str.Casefold(s string) string` | 部分 | 仅特判 `ß`/`ẞ`/`İ`，其余退化为 `ToLower`；不是完整 Unicode case folding |
+| `casefold()` | `str.Casefold(s string) string` | 部分 | 支持 `ß/ẞ/İ` 与常见连字展开，其余退化为 `ToLower`；不是完整 Unicode case folding |
 | `strip([chars])` | `str.Strip(s)`、`str.StripChars(s, chars)` | 支持 | 无参版按 Python 的空白集合；带 chars 的版本拆成独立函数 |
 | `lstrip([chars])` | `str.Lstrip(s)`、`str.LstripChars(s, chars)` | 支持 | 同上 |
 | `rstrip([chars])` | `str.Rstrip(s)`、`str.RstripChars(s, chars)` | 支持 | 同上 |
@@ -148,6 +148,12 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.split(sep)`、`bytes.join(parts)` | `conv.Bytes_split`、`conv.Bytes_join` | 支持 | `sep` 为空返回 error；返回新切片 |
 | `bytes.find/sub in b/count` | `conv.Bytes_index`、`conv.Bytes_contains`、`conv.Bytes_count` | 支持 | Index 未找到返回 -1；Count 空 sub 为 len(data)+1 |
 | `bytes.replace(old, new[, count])` | `conv.Bytes_replace` | 支持 | 空 old 按字节边界插入 |
+| `bytes.startswith(prefix)`、`bytes.endswith(suffix)` | `conv.Bytes_startswith`、`conv.Bytes_endswith` | 支持 | 单前缀/后缀；不支持元组 |
+| `bytes.find(sub)`、`bytes.rfind(sub)` | `conv.Bytes_find`、`conv.Bytes_rfind` | 支持 | 未找到返回 -1 |
+| `bytes.partition(sep)`、`bytes.rpartition(sep)` | `conv.Bytes_partition`、`conv.Bytes_rpartition` | 部分 | 未找到返回 (data,nil,nil)/(nil,nil,data)；空 sep 不报错 |
+| `bytes.splitlines()` | `conv.Bytes_splitlines` | 支持 | 按 \n、\r、\r\n 切分，不保留行尾 |
+| `bytes.capitalize()`、`title()`、`swapcase()` | `conv.Bytes_capitalize`、`Bytes_title`、`Bytes_swapcase` | 支持 | 仅 ASCII 字母转换，0x80 以上字节不变 |
+| `bytes.zfill(width)` | `conv.Bytes_zfill` | 支持 | 保留开头 +/- 符号位置 |
 
 ### collections
 
