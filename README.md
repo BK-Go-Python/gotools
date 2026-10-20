@@ -27,7 +27,7 @@ go get github.com/BK-Go-Python/gotools
 | `set` | `set.Set`、`set.Frozen`（`set` / `frozenset`） |
 | `collections` | `Counter`、`Deque`、`OrderedDict`（Python `collections` 风格） |
 | `bytearray` | Python `bytearray` 风格的具名可变字节序列 |
-| `functools` | `Memoize`、`LruCache`（Python `functools` 风格缓存） |
+| `functools` | `Memoize`、`LruCache`、`Partial`（Python `functools` 风格） |
 | `json` | `Loads`/`Dumps`/`Load`/`Dump`/`Indent`（Python `json` 风格） |
 | `pathlib` | `Path` 路径对象：读写、遍历、glob、mkdir、rename 等 |
 | `random` | `Seed`/`Float`/`Randint`/`Randrange`/`Choice`/`Shuffle`/`Sample` |

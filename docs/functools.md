@@ -32,8 +32,26 @@ cache.Keys()        // [c a]
 - 并发安全
 - `Keys` 返回从最近使用到最久未使用的键
 
+## Partial
+
+```go
+fn := func(a int, b string) string { return b + "!" }
+partial, _ := functools.NewPartial(fn, 1)
+result, err := partial.Call("x") // ["x!"]
+
+add := func(a, b int) int { return a + b }
+inc := functools.Partial2(add, 1) // func(int) int
+fmt.Println(inc(2))               // 3
+```
+
+- `NewPartial(fn, bound...).Call(args...)`：反射版，返回 `[]any` 与 error
+- `Partial1` / `Partial2`：类型安全的一元/二元偏函数
+- 支持变参函数；panic 会转换为 error
+
 ## DIFF
 
 - Go 版本没有装饰器，因此不提供 `@lru_cache` 语法；用 `Memoize`/`LruCache` 显式包装。
 - `Memoize` 不统计命中率，也不暴露 `cache_info()`；需要统计时用 `LruCache`。
+- `Partial.Call` 返回 `[]any`，不是直接返回强类型函数；强类型场景用 `Partial1`/`Partial2`。
+- 不支持 Python 的 `partial.keywords`（关键字参数）；Go 没有关键字参数。
 - `LruCache` 的容量是固定 int，不支持 `maxsize=None`（无界）；无界场景直接用 `Memoize` 或 map。
