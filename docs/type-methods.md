@@ -168,7 +168,8 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 |---|---|---|---|
 | `collections.Counter` | `collections.Counter[T comparable]`、`NewCounter`、`Add`、`Count`、`Total`、`MostCommon`、`Elements`、`Update`、`Subtract`、`Copy`、`Equal` | 部分 | 并列计数与 Elements 按 `fmt.Sprint` 排序；Python 用插入顺序。`Equal` 严格比较键集合，`Counter(a=0) != Counter()`（Python 3.10+ 视为相等） |
 | `collections.deque` | `collections.Deque[T]`、`NewDeque`、`Append`、`AppendLeft`、`Extend`、`ExtendLeft`、`Pop`、`PopLeft`、`Peek`、`PeekLeft`、`Rotate`、`Len`、`Items`、`Clear`、`Copy` | 支持 | 环形缓冲区；两端插入/删除摊还 O(1)；`ExtendLeft` 顺序与入参相反，与 Python 一致；空操作返回 `(零值,false)` |
-| `collections.OrderedDict` | `collections.OrderedDict[K comparable, V any]`、`NewOrderedDict`、`Set`、`Get`、`Has`、`Delete`、`Pop`、`PopItem`、`Keys`、`Values`、`Items`、`Len`、`Clear`、`Copy`、`MoveToEnd`、`Equal` | 支持 | map + 双向链表，`Set/Get/Delete/PopItem/MoveToEnd` O(1)；`PopItem` 默认 LIFO，`last=false` 为 FIFO；`Equal` 顺序敏感 |
+| `collections.OrderedDict` | `collections.OrderedDict[K comparable, V any]`、`NewOrderedDict`、`Set`、`Get`、`Has`、`Delete`、`Pop`、`PopItem`、`Keys`、`Values`、`Items`、`Len`、`Clear`、`Copy`、`MoveToEnd`、`Equal`、`Setdefault`、`Update`、`Merge` | 支持 | map + 双向链表，`Set/Get/Delete/PopItem/MoveToEnd` O(1)；`PopItem` 默认 LIFO，`last=false` 为 FIFO；`Equal` 顺序敏感；`Update` 保留已有键位置，`Merge` 不修改源 |
+| `Counter` 合并运算 | `Counter.AddCounter`、`SubCounter`、`Union`、`Intersection`、`Negate`、`UpdateCounter`、`SubtractCounter` | 支持 | 对应 Python 的 `+`、`-`、`|`、`&`、一元 `-`、`update`、`subtract`；Add/Sub/Union/Intersection 只保留正计数 |
 
 ### bytearray
 
