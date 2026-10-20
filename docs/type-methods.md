@@ -68,6 +68,8 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `len(l)`、`l[i]`、`l[i] = x` | `Len`、`Get`、`Set` | 支持 | 支持负下标 |
 | `x in l`、`l1 == l2` | `Contains`、`Equal` | 支持 | 按 Python 语义做深比较 |
 | `list(iterable)` | `list.New`、`list.From`、`list.MustFrom`、`list.Of[T]` | 部分 | 动态版返回 `List`；泛型版 `Of[T]` 返回同构的 `[]T` |
+| `l1 + l2` | `List.Concat(others ...List) List` | 支持 | 返回新列表，不修改入参 |
+| `l * n` | `List.Repeat(n int) List` | 支持 | 返回新列表；`n <= 0` 返回空列表 |
 
 ### dict
 
@@ -123,9 +125,12 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 |---|---|---|---|
 | `int.bit_length()` | `py.BitLength[T Integer](x T) int` | 支持 | 支持定宽 int/uint 系列；负数按绝对值计算；不支持任意精度整数 |
 | `float.is_integer()` | `conv.IsInteger(f float64) bool` | 支持 | NaN/Inf 返回 `false`；函数形式而非方法；没有 Decimal 版本 |
+| `float.hex()` | `conv.FloatHex(f float64) string` | 支持 | 13 位尾数；次正规数/±0/Inf/NaN 与 Python 一致 |
+| `float.fromhex(s)` | `conv.FromFloatHex(s string) (float64, error)` | 支持 | 兼容 Python/Go 常见十六进制浮点写法；非法输入返回 error |
+| `float.as_integer_ratio()` | `conv.FloatAsIntegerRatio(f float64) (*big.Int, *big.Int, error)` | 支持 | 返回精确最简分数；NaN/Inf 返回 error；结果用 big.Int |
 | `int.to_bytes(length, byteorder, *, signed=False)` | `conv.IntToBytes(x int64, length int, order string, signed ...bool)` | 部分 | int64；length 1 到 1 MiB；Python 支持任意精度/长度 |
 | `int.from_bytes(bytes, byteorder, *, signed=False)` | `conv.IntFromBytes(data []byte, order string, signed ...bool)` | 部分 | 仅 1–8 字节、返回 int64；超出 int64 报错 |
-| `int.bit_count()` | — | 不提供 | 可改用 `math/bits.OnesCount64`；gotools 未封装 |
+| `int.bit_count()` | `py.BitCount[T Integer](x T) int` | 支持 | 统计绝对值位模式中 1 的个数；定宽整数，不支持任意精度 |
 
 ### bytes
 
@@ -134,7 +139,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.hex([sep[, bytes_per_sep]])` | `conv.BytesHex(data []byte) string` | 部分 | 返回小写十六进制字符串；不提供 sep/bytes_per_sep；返回 string 而非 bytes |
 | `bytes.fromhex(s)` | `conv.FromHex(s string) ([]byte, error)` | 部分 | 只忽略空格、Tab、CR、LF，未忽略全部 ASCII 空白；奇数长度或非法字符返回 `error`；类方法用包函数替代 |
 | `bytes(v)`、`bytearray(v)` | `conv.Bytes`、`conv.ByteArray` | 部分 | 支持 string、`[]byte`、整数和字节切片；不提供 encoding 参数 |
-| `bytes.decode()`、`str.encode()` | — | 不提供 | 直接用 `string(b)` / `[]byte(s)`；其他编码转换需要 `golang.org/x/text` 等外部依赖 |
+| `bytes.decode()`、`str.encode()` | `conv.Decode(data []byte) (string, error)`、`conv.Encode(s string) []byte` | 部分 | 仅 UTF-8；Decode 对非法 UTF-8 返回 error；其他编码需 `golang.org/x/text` |
 
 ## 三个重点差异
 
