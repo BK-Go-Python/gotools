@@ -84,7 +84,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `dict.fromkeys(keys[, value])` | `dict.FromKeys(keys []string, value ...interface{}) Dict` | 部分 | 包级函数而非类方法；键只能是 `[]string`；所有键共享同一个 value |
 | `copy()` | `Dict.Copy() Dict` | 支持 | 浅拷贝 |
 | `clear()` | `Dict.Clear() Dict` | 支持 | 原地清空 |
-| 任意可哈希键 | 不提供 | 不提供 | `Dict` 固定为 `map[string]interface{}`；`dict.Of[K, V]` 只是泛型 map 浅拷贝，不是动态字典 |
+| 任意可哈希键 | — | 不提供 | `Dict` 固定为 `map[string]interface{}`；`dict.Of[K, V]` 只是泛型 map 浅拷贝，不是动态字典 |
 | `d[k] = v`、`k in d`、`del d[k]` | `Set`、`Has`、`Delete` | 支持 | `Set` 返回 `Dict` 便于链式调用；`Delete` 返回原先是否存在 |
 | `len(d)`、`d == other` | `Len`、`Equal` | 支持 | 深比较 |
 | `dict(mapping)` | `dict.New`、`dict.From`、`dict.Of[K, V]` | 部分 | 动态版只支持 string 键 |
@@ -112,9 +112,10 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `set.clear()` | `Set[T].Clear() Set[T]` | 支持 | 原地清空 |
 | `set.copy()` | `Set[T].Copy() Set[T]`、`Clone()` | 支持 | 浅拷贝 |
 | `frozenset` | `Frozen[T]`、`set.NewFrozen` | 部分 | 不可变集合；没有 add/remove/update/pop/clear；`Copy`/`Clone` 返回自身 |
+| `frozenset` 的非变更运算 | `Frozen[T].Union`、`Intersection`、`Difference`、`SymmetricDifference`、`IsSubset`、`Issuperset`、`IsDisjoint` | 支持 | 与 `Set` 同名同义，返回 `Frozen[T]`；没有原地更新方法 |
 | `set(iterable)`、`frozenset(iterable)` | `set.New`、`set.NewFrozen` | 部分 | 只接受变参，从切片构造需要显式循环 |
 | 元素类型要求 | `T comparable` | 部分 | 不能放切片、map、函数；Python 只要求元素 hashable（可用 tuple/frozenset） |
-| 运算符 `\|`、`&`、`-`、`^`、`<=`、`>=` | 不提供 | 不提供 | Go 不支持运算符重载；请使用 `Union`、`Intersection`、`Difference`、`SymmetricDifference`、`IsSubset`、`Issuperset` |
+| 集合运算符（并、交、差、对称差、子集、超集） | — | 不提供 | Go 不支持运算符重载；请使用 `Union`、`Intersection`、`Difference`、`SymmetricDifference`、`IsSubset`、`Issuperset` |
 
 ### int / float
 
@@ -124,7 +125,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `float.is_integer()` | `conv.IsInteger(f float64) bool` | 支持 | NaN/Inf 返回 `false`；函数形式而非方法；没有 Decimal 版本 |
 | `int.to_bytes(length, byteorder, *, signed=False)` | `conv.IntToBytes(x int64, length int, order string, signed ...bool)` | 部分 | int64；length 1 到 1 MiB；Python 支持任意精度/长度 |
 | `int.from_bytes(bytes, byteorder, *, signed=False)` | `conv.IntFromBytes(data []byte, order string, signed ...bool)` | 部分 | 仅 1–8 字节、返回 int64；超出 int64 报错 |
-| `int.bit_count()` | 不提供 | 不提供 | 可改用 `math/bits.OnesCount64`；gotools 未封装 |
+| `int.bit_count()` | — | 不提供 | 可改用 `math/bits.OnesCount64`；gotools 未封装 |
 
 ### bytes
 
@@ -133,7 +134,7 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.hex([sep[, bytes_per_sep]])` | `conv.BytesHex(data []byte) string` | 部分 | 返回小写十六进制字符串；不提供 sep/bytes_per_sep；返回 string 而非 bytes |
 | `bytes.fromhex(s)` | `conv.FromHex(s string) ([]byte, error)` | 部分 | 只忽略空格、Tab、CR、LF，未忽略全部 ASCII 空白；奇数长度或非法字符返回 `error`；类方法用包函数替代 |
 | `bytes(v)`、`bytearray(v)` | `conv.Bytes`、`conv.ByteArray` | 部分 | 支持 string、`[]byte`、整数和字节切片；不提供 encoding 参数 |
-| `bytes.decode()`、`str.encode()` | 不提供 | 不提供 | 直接用 `string(b)` / `[]byte(s)`；其他编码转换需要 `golang.org/x/text` 等外部依赖 |
+| `bytes.decode()`、`str.encode()` | — | 不提供 | 直接用 `string(b)` / `[]byte(s)`；其他编码转换需要 `golang.org/x/text` 等外部依赖 |
 
 ## 三个重点差异
 
@@ -145,7 +146,7 @@ Python 3.7+ 的 `dict` 保留插入顺序，`popitem()` 默认按 LIFO 弹出；
 - `Values()`、`Items()` 复用排序后的键，因此三者的顺序始终一致；
 - `PopItem()` 返回排序后的**第一个**键值对，而不是 Python 的最后一个；
 - `String()`/Python 风格 repr 同样按键排序，便于生成稳定的测试输出；
-- `list.From(map)`、`pyval.Iter(map)` 也按键排序，避免 map 随机顺序影响结果。
+- `list.From(map)` 得到的键切片也按键排序，避免 map 随机顺序影响结果。
 
 ```go
 d := dict.From(map[string]interface{}{"b": 2, "a": 1})
