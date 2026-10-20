@@ -107,7 +107,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 
 常用类型方法（str/list/dict/set/int/float/bytes）的逐项对照见
 [`docs/type-methods.md`](docs/type-methods.md)，缓存工具见
-[`docs/functools.md`](docs/functools.md)。
+[`docs/functools.md`](docs/functools.md)，迭代工具见
+[`docs/itertools.md`](docs/itertools.md)。
 
 ### 命名约定
 
