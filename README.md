@@ -27,6 +27,7 @@ go get github.com/BK-Go-Python/gotools
 | `set` | `set.Set`、`set.Frozen`（`set` / `frozenset`） |
 | `collections` | `Counter`、`Deque`、`OrderedDict`（Python `collections` 风格） |
 | `bytearray` | Python `bytearray` 风格的具名可变字节序列 |
+| `functools` | `Memoize`、`LruCache`（Python `functools` 风格缓存） |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
 | `conv` | `int/float/bool/str/bytes/bytearray/complex` 转换、JSON、struct ↔ map |
@@ -105,7 +106,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 - [`docs/unsupported-protocol.md`](docs/unsupported-protocol.md)
 
 常用类型方法（str/list/dict/set/int/float/bytes）的逐项对照见
-[`docs/type-methods.md`](docs/type-methods.md)。
+[`docs/type-methods.md`](docs/type-methods.md)，缓存工具见
+[`docs/functools.md`](docs/functools.md)。
 
 ### 命名约定
 
@@ -144,7 +146,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
