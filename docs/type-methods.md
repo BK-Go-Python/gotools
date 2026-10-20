@@ -141,6 +141,14 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes(v)`、`bytearray(v)` | `conv.Bytes`、`conv.ByteArray` | 部分 | 支持 string、`[]byte`、整数和字节切片；不提供 encoding 参数 |
 | `bytes.decode()`、`str.encode()` | `conv.Decode(data []byte) (string, error)`、`conv.Encode(s string) []byte` | 部分 | 仅 UTF-8；Decode 对非法 UTF-8 返回 error；其他编码需 `golang.org/x/text` |
 
+### collections
+
+| Python 类型/方法 | gotools API | 状态 | 主要 DIFF |
+|---|---|---|---|
+| `collections.Counter` | `collections.Counter[T comparable]`、`NewCounter`、`Add`、`Count`、`Total`、`MostCommon`、`Elements`、`Update`、`Subtract`、`Copy`、`Equal` | 部分 | 并列计数与 Elements 按 `fmt.Sprint` 排序；Python 用插入顺序。`Equal` 严格比较键集合，`Counter(a=0) != Counter()`（Python 3.10+ 视为相等） |
+| `collections.deque` | `collections.Deque[T]`、`NewDeque`、`Append`、`AppendLeft`、`Extend`、`ExtendLeft`、`Pop`、`PopLeft`、`Peek`、`PeekLeft`、`Rotate`、`Len`、`Items`、`Clear`、`Copy` | 支持 | 环形缓冲区；两端插入/删除摊还 O(1)；`ExtendLeft` 顺序与入参相反，与 Python 一致；空操作返回 `(零值,false)` |
+| `collections.OrderedDict` | `collections.OrderedDict[K comparable, V any]`、`NewOrderedDict`、`Set`、`Get`、`Has`、`Delete`、`Pop`、`PopItem`、`Keys`、`Values`、`Items`、`Len`、`Clear`、`Copy`、`MoveToEnd`、`Equal` | 支持 | map + 双向链表，`Set/Get/Delete/PopItem/MoveToEnd` O(1)；`PopItem` 默认 LIFO，`last=false` 为 FIFO；`Equal` 顺序敏感 |
+
 ## 三个重点差异
 
 ### 1. 有序性：Go map 无序，`dict` 输出按键排序

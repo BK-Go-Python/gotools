@@ -25,6 +25,7 @@ go get github.com/BK-Go-Python/gotools
 | `list` | `list.List` 及 append/extend/insert/remove/pop/index/sort/reverse/slice 等方法 |
 | `dict` | `dict.Dict` 及 get/setdefault/keys/values/items/update/pop/getPath 等方法 |
 | `set` | `set.Set`、`set.Frozen`（`set` / `frozenset`） |
+| `collections` | `Counter`、`Deque`、`OrderedDict`（Python `collections` 风格） |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
 | `conv` | `int/float/bool/str/bytes/bytearray/complex` 转换、JSON、struct ↔ map |
 | `time` | 时间戳、`strftime/strptime`、日期加减、月初月末、中文相对时间 |
@@ -137,7 +138,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
