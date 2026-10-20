@@ -100,27 +100,42 @@ func RangeSeq(start, stop, step int) (iter.Seq[int], error) {
 	}, nil
 }
 
-// EnumerateOf 等价于 Python 的 enumerate(seq, start)。
+// Enumerate 等价于 Python 的 enumerate(seq, start=0)，返回 (index, value) 列表。
+//
+// 支持任意切片类型，包括命名切片：
+//
+//	py.Enumerate([]string{"a", "b"})
 //
 // Python: enumerate(seq, start=0)
-// DIFF: 返回切片而不是惰性迭代器。
-func EnumerateOf[T any](seq []T, start ...int) []PairOf[T] {
+// DIFF: 返回切片而不是惰性迭代器；异构 iterable 使用 EnumerateAny。
+func Enumerate[S ~[]E, E any](seq S, start ...int) []PairOf[E] {
 	offset := 0
 	if len(start) > 0 {
 		offset = start[0]
 	}
-	out := make([]PairOf[T], len(seq))
+	out := make([]PairOf[E], len(seq))
 	for i, value := range seq {
-		out[i] = PairOf[T]{Index: offset + i, Value: value}
+		out[i] = PairOf[E]{Index: offset + i, Value: value}
 	}
 	return out
 }
 
-// MapOf 等价于 Python 的 map(fn, seq)，返回新切片。
+// EnumerateOf 是 Enumerate 的旧名字，保留用于兼容。
+//
+// Deprecated: 使用 Enumerate。
+func EnumerateOf[T any](seq []T, start ...int) []PairOf[T] {
+	return Enumerate(seq, start...)
+}
+
+// Map 等价于 Python 的 map(fn, seq)，返回新切片。
+//
+// 参数顺序与 Python 一致（函数在前），支持命名切片：
+//
+//	py.Map(strconv.Itoa, []int{1, 2, 3}) // ["1" "2" "3"]
 //
 // Python: map(fn, seq)
-// DIFF: 返回切片而不是惰性迭代器。
-func MapOf[T, R any](seq []T, fn func(T) R) []R {
+// DIFF: 返回切片而不是惰性迭代器；异构 iterable 使用 MapAny。
+func Map[S ~[]E, E any, R any](fn func(E) R, seq S) []R {
 	out := make([]R, len(seq))
 	for i, value := range seq {
 		out[i] = fn(value)
@@ -128,30 +143,53 @@ func MapOf[T, R any](seq []T, fn func(T) R) []R {
 	return out
 }
 
-// FilterOf 等价于 Python 的 filter(fn, seq)，返回新切片。
+// MapOf 是 Map 的旧名字，保留用于兼容（参数顺序为 seq, fn）。
+//
+// Deprecated: 使用 Map。
+func MapOf[T, R any](seq []T, fn func(T) R) []R {
+	return Map(fn, seq)
+}
+
+// Filter 等价于 Python 的 filter(fn, seq)，返回新切片。
+//
+// 参数顺序与 Python 一致（函数在前）；异构 iterable 使用 FilterAny。
 //
 // Python: filter(fn, seq)
 // DIFF: 返回切片而不是惰性迭代器。
-func FilterOf[T any](seq []T, keep func(T) bool) []T {
-	out := make([]T, 0, len(seq))
+func Filter[S ~[]E, E any](fn func(E) bool, seq S) []E {
+	out := make([]E, 0, len(seq))
 	for _, value := range seq {
-		if keep(value) {
+		if fn(value) {
 			out = append(out, value)
 		}
 	}
 	return out
 }
 
-// ReversedOf 等价于 Python 的 reversed(seq)，返回新切片且不修改入参。
+// FilterOf 是 Filter 的旧名字，保留用于兼容（参数顺序为 seq, fn）。
+//
+// Deprecated: 使用 Filter。
+func FilterOf[T any](seq []T, keep func(T) bool) []T {
+	return Filter(keep, seq)
+}
+
+// Reversed 等价于 Python 的 reversed(seq)，返回新切片且不修改入参。
 //
 // Python: reversed(seq)
-// DIFF: 返回切片而不是反向迭代器。
-func ReversedOf[T any](seq []T) []T {
-	out := make([]T, len(seq))
+// DIFF: 返回切片而不是反向迭代器；异构 iterable 使用 ReversedAny。
+func Reversed[S ~[]E, E any](seq S) []E {
+	out := make([]E, len(seq))
 	for i, value := range seq {
 		out[len(seq)-1-i] = value
 	}
 	return out
+}
+
+// ReversedOf 是 Reversed 的旧名字，保留用于兼容。
+//
+// Deprecated: 使用 Reversed。
+func ReversedOf[T any](seq []T) []T {
+	return Reversed(seq)
 }
 
 // Zip2 等价于 Python 的 zip(a, b)，长度取两者较短者。

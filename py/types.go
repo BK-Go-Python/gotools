@@ -1,6 +1,6 @@
 package py
 
-// PairOf 是 EnumerateOf 返回的 (index, value) 对。
+// PairOf 是 Enumerate 返回的 (index, value) 对。
 type PairOf[T any] struct {
 	Index int
 	Value T

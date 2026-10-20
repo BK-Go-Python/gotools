@@ -54,7 +54,7 @@ func main() {
     fmt.Println(str.Split("a,b,c", ","))           // [a b c]
 
     fmt.Println(py.Range(5))                       // [0 1 2 3 4]
-    fmt.Println(py.MapOf([]int{1, 2, 3}, func(v int) int { return v * 2 })) // [2 4 6]
+    fmt.Println(py.Map(func(v int) int { return v * 2 }, []int{1, 2, 3})) // [2 4 6]
     fmt.Println(py.Sum([]int{1, 2, 3}))          // 6
 
     s := set.New(1, 2, 3).Union(set.New(3, 4))
@@ -115,13 +115,13 @@ gotools 的约定是：**只把首字母大写，其余保持 Python 拼写**（
 Python 拼写。
 
 - Python 名已被动态版占用时，泛型版本加 `Of` 后缀：
-  `MapOf/FilterOf/EnumerateOf/ReversedOf/DivModOf`。
+  `DivModOf`。
 - 变参类型参数无法表达时用固定元数：`Zip2`/`Zip3`。
 - 动态版保留 Python 语义；泛型版是类型安全的快速路径，不改变旧 API。
 
 ## 设计原则
 
-1. **只增不改**：现有导出 API 的签名与语义保持兼容。
+1. **API 仍在演进**：项目尚未发布稳定 tag，优先让命名和语义贴近 Python；破坏性重命名会同步更新测试、文档与迁移说明，已稳定的别名保留为 Deprecated。
 2. **新 API 不 panic**：解析、IO、反射、越界错误统一用 `error` 返回；
    历史动态 API 的 panic 行为仅为兼容保留。
 3. **确定性**：map 迭代按键排序，排序稳定，避免 Go map 随机顺序影响结果。

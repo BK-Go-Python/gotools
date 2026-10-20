@@ -69,12 +69,12 @@ func TestRangeAndZip(t *testing.T) {
 }
 
 func TestFunctionalHelpers(t *testing.T) {
-	mapped := Map(func(v interface{}) interface{} { return v.(int) * 2 }, []int{1, 2, 3})
+	mapped := MapAny(func(v interface{}) interface{} { return v.(int) * 2 }, []int{1, 2, 3})
 	if got := mapped.Join(","); got != "2,4,6" {
 		t.Fatalf("Map = %q", got)
 	}
 
-	filtered := Filter(func(v interface{}) bool { return v.(int)%2 == 0 }, []int{1, 2, 3, 4})
+	filtered := FilterAny(func(v interface{}) bool { return v.(int)%2 == 0 }, []int{1, 2, 3, 4})
 	if got := filtered.Join(","); got != "2,4" {
 		t.Fatalf("Filter = %q", got)
 	}
@@ -89,7 +89,7 @@ func TestFunctionalHelpers(t *testing.T) {
 	if got := SortedAny([]int{3, 1, 2}).Join(","); got != "1,2,3" {
 		t.Fatalf("Sorted = %q", got)
 	}
-	if got := Reversed([]int{1, 2, 3}).Join(","); got != "3,2,1" {
+	if got := ReversedAny([]int{1, 2, 3}).Join(","); got != "3,2,1" {
 		t.Fatalf("Reversed = %q", got)
 	}
 

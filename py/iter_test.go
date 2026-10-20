@@ -121,3 +121,24 @@ func TestTransformations(t *testing.T) {
 		t.Fatalf("ReversedOf mutated input: %v", input)
 	}
 }
+
+func TestGenericTransformations(t *testing.T) {
+	doubled := Map(func(v int) int { return v * 2 }, []int{1, 2, 3})
+	if !slices.Equal(doubled, []int{2, 4, 6}) {
+		t.Fatalf("Map = %v", doubled)
+	}
+
+	even := Filter(func(v int) bool { return v%2 == 0 }, []int{1, 2, 3, 4})
+	if !slices.Equal(even, []int{2, 4}) {
+		t.Fatalf("Filter = %v", even)
+	}
+
+	pairs := Enumerate([]string{"a", "b"}, 10)
+	if len(pairs) != 2 || pairs[0].Index != 10 || pairs[1].Value != "b" {
+		t.Fatalf("Enumerate = %v ", pairs)
+	}
+
+	if got := Reversed([]int{1, 2, 3}); !slices.Equal(got, []int{3, 2, 1}) {
+		t.Fatalf("Reversed = %v", got)
+	}
+}

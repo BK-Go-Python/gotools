@@ -46,14 +46,14 @@ func BenchmarkSorted(b *testing.B) {
 	benchmarkIntsSink = sorted
 }
 
-func BenchmarkMapOf(b *testing.B) {
+func BenchmarkMap(b *testing.B) {
 	seq := benchmarkInts(1024)
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	var mapped []string
 	for i := 0; i < b.N; i++ {
-		mapped = py.MapOf(seq, strconv.Itoa)
+		mapped = py.Map(strconv.Itoa, seq)
 	}
 	benchmarkStrsSink = mapped
 }

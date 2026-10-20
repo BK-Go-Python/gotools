@@ -310,8 +310,10 @@ func All(iterable interface{}) bool {
 	return true
 }
 
-// Enumerate 等价于 Python 的 enumerate(iterable, start=0)。
-func Enumerate(iterable interface{}, start ...int) []Pair {
+// EnumerateAny 是动态版 enumerate(iterable, start=0)。
+//
+// 新代码优先使用泛型 Enumerate；异构 iterable 才使用 EnumerateAny。
+func EnumerateAny(iterable interface{}, start ...int) []Pair {
 	offset := 0
 	if len(start) > 0 {
 		offset = start[0]
@@ -348,8 +350,10 @@ func Zip(iterables ...interface{}) [][]interface{} {
 	return rows
 }
 
-// Map 等价于 Python 的 map(fn, iterable)，返回 List。
-func Map(fn func(interface{}) interface{}, iterable interface{}) list.List {
+// MapAny 是动态版 map(fn, iterable)，返回 List。
+//
+// 新代码优先使用泛型 Map；异构 iterable 才使用 MapAny。
+func MapAny(fn func(interface{}) interface{}, iterable interface{}) list.List {
 	items := mustIter(iterable)
 	out := make(list.List, len(items))
 	for i, item := range items {
@@ -358,8 +362,10 @@ func Map(fn func(interface{}) interface{}, iterable interface{}) list.List {
 	return out
 }
 
-// Filter 等价于 Python 的 filter(fn, iterable)，返回 List。
-func Filter(fn func(interface{}) bool, iterable interface{}) list.List {
+// FilterAny 是动态版 filter(fn, iterable)，返回 List。
+//
+// 新代码优先使用泛型 Filter；异构 iterable 才使用 FilterAny。
+func FilterAny(fn func(interface{}) bool, iterable interface{}) list.List {
 	items := mustIter(iterable)
 	out := make(list.List, 0, len(items))
 	for _, item := range items {
@@ -413,8 +419,10 @@ func SortedBy(iterable interface{}, key func(interface{}) interface{}, reverse .
 	return out
 }
 
-// Reversed 等价于 Python 的 reversed(iterable)，返回新的 List。
-func Reversed(iterable interface{}) list.List {
+// ReversedAny 是动态版 reversed(iterable)，返回新的 List。
+//
+// 新代码优先使用泛型 Reversed；异构 iterable 才使用 ReversedAny。
+func ReversedAny(iterable interface{}) list.List {
 	items := mustIter(iterable)
 	out := make(list.List, len(items))
 	for i, item := range items {
