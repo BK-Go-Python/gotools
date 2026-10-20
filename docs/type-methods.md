@@ -176,6 +176,8 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | Python 类型/方法 | gotools API | 状态 | 主要 DIFF |
 |---|---|---|---|
 | `bytearray(v)` | `bytearray.From(v)`、`bytearray.New(items...)` | 支持 | 复用 `conv.Bytes` 的构造规则 |
+| `bytearray.fromhex(s)` | `bytearray.FromHex(s)` | 支持 | 忽略空白，非法十六进制返回 error |
+| `b1 + b2`、`b * n` | `ByteArray.Concat`、`ByteArray.Repeat` | 支持 | 返回新 ByteArray；n<=0 返回空 |
 | `append`/`extend`/`insert`/`pop`/`remove`/`reverse`/`clear`/`copy` | `ByteArray.Append`、`Extend`、`Insert`、`Pop`、`PopAt`、`Remove`、`Reverse`、`Clear`、`Copy` | 支持 | 原地修改并返回指针；错误用 error 返回 |
 | `count`/`index`/切片/下标读写 | `Count`、`Index`、`Slice`、`Get`、`Set` | 支持 | 负数下标与 Python 一致 |
 | `replace`/`upper`/`lower`/`decode` | `Replace`、`Upper`、`Lower`、`Decode` | 支持 | replace 原地；upper/lower 只处理 ASCII；decode 仅 UTF-8 |

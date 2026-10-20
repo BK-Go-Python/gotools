@@ -233,3 +233,38 @@ func (b ByteArray) Equal(other ByteArray) bool {
 func (b ByteArray) Repr() string {
 	return fmt.Sprintf("bytearray(%s)", pyval.Repr([]byte(b)))
 }
+
+// FromHex 等价于 Python 的 bytearray.fromhex(s)，忽略输入中的空白。
+func FromHex(s string) (ByteArray, error) {
+	data, err := conv.FromHex(s)
+	if err != nil {
+		return nil, err
+	}
+	return ByteArray(data), nil
+}
+
+// Concat 等价于 Python 的 b1 + b2 + ...，返回新的 ByteArray。
+func (b ByteArray) Concat(others ...ByteArray) ByteArray {
+	size := len(b)
+	for _, other := range others {
+		size += len(other)
+	}
+	out := make(ByteArray, 0, size)
+	out = append(out, b...)
+	for _, other := range others {
+		out = append(out, other...)
+	}
+	return out
+}
+
+// Repeat 等价于 Python 的 b * n；n <= 0 时返回空 ByteArray。
+func (b ByteArray) Repeat(n int) ByteArray {
+	if n <= 0 || len(b) == 0 {
+		return ByteArray{}
+	}
+	out := make(ByteArray, 0, len(b)*n)
+	for i := 0; i < n; i++ {
+		out = append(out, b...)
+	}
+	return out
+}
