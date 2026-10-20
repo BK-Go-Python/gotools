@@ -30,6 +30,7 @@ go get github.com/BK-Go-Python/gotools
 | `functools` | `Memoize`、`LruCache`（Python `functools` 风格缓存） |
 | `json` | `Loads`/`Dumps`/`Load`/`Dump`/`Indent`（Python `json` 风格） |
 | `pathlib` | `Path` 路径对象：读写、遍历、glob、mkdir、rename 等 |
+| `random` | `Seed`/`Float`/`Randint`/`Randrange`/`Choice`/`Shuffle`/`Sample` |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
 | `conv` | `int/float/bool/str/bytes/bytearray/complex` 转换、JSON、struct ↔ map |
@@ -112,7 +113,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/functools.md`](docs/functools.md)，迭代工具见
 [`docs/itertools.md`](docs/itertools.md)，JSON 用法见
 [`docs/json.md`](docs/json.md)，路径操作见
-[`docs/pathlib.md`](docs/pathlib.md)。
+[`docs/pathlib.md`](docs/pathlib.md)，随机数见
+[`docs/random.md`](docs/random.md)。
 
 ### 命名约定
 
@@ -151,7 +153,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
