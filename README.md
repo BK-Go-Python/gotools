@@ -114,8 +114,6 @@ gotools 的约定是：**只把首字母大写，其余保持 Python 拼写**（
 `bytes.upper`→`Bytes_upper`）。已经存在的驼峰 API 保留为兼容别名，新 API 优先使用
 Python 拼写。
 
-- Python 名已被动态版占用时，泛型版本加 `Of` 后缀：
-  `DivModOf`。
 - 变参类型参数无法表达时用固定元数：`Zip2`/`Zip3`。
 - 动态版保留 Python 语义；泛型版是类型安全的快速路径，不改变旧 API。
 

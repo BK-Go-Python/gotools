@@ -42,6 +42,8 @@ func Oct[T Integer](x T) string {
 
 // DivModOf 等价于 Python 的 divmod(a, b)，使用向下取整的除法语义。
 //
+// Deprecated: 使用 Divmod。
+//
 // Python: divmod(a, b)
 // DIFF: 仅支持整数；b 为 0 时返回 ErrZeroDivision（Python 抛 ZeroDivisionError）。
 func DivModOf[T Integer](a, b T) (q, r T, err error) {
@@ -123,4 +125,13 @@ func signedRadix(n int64, base int, prefix string) string {
 		return "-" + prefix + s[1:]
 	}
 	return prefix + s
+}
+
+// Divmod 等价于 Python 的 divmod(a, b)，使用向下取整的除法语义，
+// 并保留元素类型 T。
+//
+// Python: divmod(a, b)
+// DIFF: 仅支持整数；b 为 0 时返回 ErrZeroDivision。
+func Divmod[T Integer](a, b T) (q, r T, err error) {
+	return DivModOf(a, b)
 }
