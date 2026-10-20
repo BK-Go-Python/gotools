@@ -10,6 +10,9 @@
 
 DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `// DIFF:` 注释为准。示例省略 `import` 和错误处理，实际调用请检查 `error`。
 
+> 命名：Go 导出标识符必须大写开头。gotools 新 API 采用“首字母大写 + Python 拼写”的形式
+> （`Most_common`、`Bit_count`、`Bytes_upper`），旧驼峰名保留为兼容别名。
+
 ## 总表
 
 ### str
@@ -140,6 +143,11 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `bytes.fromhex(s)` | `conv.FromHex(s string) ([]byte, error)` | 部分 | 只忽略空格、Tab、CR、LF，未忽略全部 ASCII 空白；奇数长度或非法字符返回 `error`；类方法用包函数替代 |
 | `bytes(v)`、`bytearray(v)` | `conv.Bytes`、`conv.ByteArray` | 部分 | 支持 string、`[]byte`、整数和字节切片；不提供 encoding 参数 |
 | `bytes.decode()`、`str.encode()` | `conv.Decode(data []byte) (string, error)`、`conv.Encode(s string) []byte` | 部分 | 仅 UTF-8；Decode 对非法 UTF-8 返回 error；其他编码需 `golang.org/x/text` |
+| `bytes.upper()`、`bytes.lower()` | `conv.Bytes_upper`、`conv.Bytes_lower` | 支持 | 只转换 ASCII 字母，0x80 以上字节不变 |
+| `bytes.strip()` | `conv.Bytes_strip` | 支持 | 只去 ASCII 空白 `" \t\n\r\v\f"` |
+| `bytes.split(sep)`、`bytes.join(parts)` | `conv.Bytes_split`、`conv.Bytes_join` | 支持 | `sep` 为空返回 error；返回新切片 |
+| `bytes.find/sub in b/count` | `conv.Bytes_index`、`conv.Bytes_contains`、`conv.Bytes_count` | 支持 | Index 未找到返回 -1；Count 空 sub 为 len(data)+1 |
+| `bytes.replace(old, new[, count])` | `conv.Bytes_replace` | 支持 | 空 old 按字节边界插入 |
 
 ### collections
 

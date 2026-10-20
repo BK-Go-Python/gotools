@@ -26,6 +26,7 @@ go get github.com/BK-Go-Python/gotools
 | `dict` | `dict.Dict` 及 get/setdefault/keys/values/items/update/pop/getPath 等方法 |
 | `set` | `set.Set`、`set.Frozen`（`set` / `frozenset`） |
 | `collections` | `Counter`、`Deque`、`OrderedDict`（Python `collections` 风格） |
+| `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
 | `conv` | `int/float/bool/str/bytes/bytearray/complex` 转换、JSON、struct ↔ map |
 | `time` | 时间戳、`strftime/strptime`、日期加减、月初月末、中文相对时间 |
@@ -107,6 +108,12 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 
 ### 命名约定
 
+Go 的导出标识符必须以大写字母开头，因此无法提供真正小写的 `sum`/`most_common`。
+gotools 的约定是：**只把首字母大写，其余保持 Python 拼写**（`chain`→`Chain`、
+`takewhile`→`Takewhile`、`most_common`→`Most_common`、`bit_count`→`Bit_count`、
+`bytes.upper`→`Bytes_upper`）。已经存在的驼峰 API 保留为兼容别名，新 API 优先使用
+Python 拼写。
+
 - Python 名已被动态版占用时，泛型版本加 `Of` 后缀：
   `SumOf/MinOf/MaxOf/SortedOf/MapOf/FilterOf/EnumerateOf/ReversedOf/DivModOf`。
 - 变参类型参数无法表达时用固定元数：`Zip2`/`Zip3`。
@@ -138,7 +145,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ itertools/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
