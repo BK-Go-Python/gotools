@@ -170,6 +170,16 @@ DIFF 列只列最需要留意的差异；完整说明以各 API 的 GoDoc 中 `/
 | `collections.deque` | `collections.Deque[T]`、`NewDeque`、`Append`、`AppendLeft`、`Extend`、`ExtendLeft`、`Pop`、`PopLeft`、`Peek`、`PeekLeft`、`Rotate`、`Len`、`Items`、`Clear`、`Copy` | 支持 | 环形缓冲区；两端插入/删除摊还 O(1)；`ExtendLeft` 顺序与入参相反，与 Python 一致；空操作返回 `(零值,false)` |
 | `collections.OrderedDict` | `collections.OrderedDict[K comparable, V any]`、`NewOrderedDict`、`Set`、`Get`、`Has`、`Delete`、`Pop`、`PopItem`、`Keys`、`Values`、`Items`、`Len`、`Clear`、`Copy`、`MoveToEnd`、`Equal` | 支持 | map + 双向链表，`Set/Get/Delete/PopItem/MoveToEnd` O(1)；`PopItem` 默认 LIFO，`last=false` 为 FIFO；`Equal` 顺序敏感 |
 
+### bytearray
+
+| Python 类型/方法 | gotools API | 状态 | 主要 DIFF |
+|---|---|---|---|
+| `bytearray(v)` | `bytearray.From(v)`、`bytearray.New(items...)` | 支持 | 复用 `conv.Bytes` 的构造规则 |
+| `append`/`extend`/`insert`/`pop`/`remove`/`reverse`/`clear`/`copy` | `ByteArray.Append`、`Extend`、`Insert`、`Pop`、`PopAt`、`Remove`、`Reverse`、`Clear`、`Copy` | 支持 | 原地修改并返回指针；错误用 error 返回 |
+| `count`/`index`/切片/下标读写 | `Count`、`Index`、`Slice`、`Get`、`Set` | 支持 | 负数下标与 Python 一致 |
+| `replace`/`upper`/`lower`/`decode` | `Replace`、`Upper`、`Lower`、`Decode` | 支持 | replace 原地；upper/lower 只处理 ASCII；decode 仅 UTF-8 |
+| `repr` | `Repr` | 支持 | 输出 `bytearray(b'...')` |
+
 ## 三个重点差异
 
 ### 1. 有序性：Go map 无序，`dict` 输出按键排序
