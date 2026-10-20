@@ -99,3 +99,25 @@ func TestSubmatch(t *testing.T) {
 		t.Fatalf("compiled submatch all = %v", got)
 	}
 }
+
+func TestNamedGroups(t *testing.T) {
+	pattern := `(?P<year>\d{4})-(?P<month>\d{2})`
+	groups, err := FindStringSubmatchMap(pattern, "date: 2024-06")
+	if err != nil || groups["year"] != "2024" || groups["month"] != "06" {
+		t.Fatalf("FindStringSubmatchMap = (%v,%v)", groups, err)
+	}
+	all, err := FindAllStringSubmatchMap(pattern, "2024-06 2025-07")
+	if err != nil || len(all) != 2 || all[1]["year"] != "2025" {
+		t.Fatalf("FindAllStringSubmatchMap = (%v,%v)", all, err)
+	}
+	compiled, err := Compile(pattern)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if names := compiled.SubexpNames(); len(names) != 3 || names[1] != "year" {
+		t.Fatalf("SubexpNames = %v", names)
+	}
+	if groups := compiled.FindStringSubmatchMap("none"); groups != nil {
+		t.Fatalf("missing groups = %v", groups)
+	}
+}

@@ -21,10 +21,15 @@ stdev, _ := statistics.Stdev([]int{1, 2, 3})        // 1
 | `statistics.pvariance` | `Pvariance`（总体，n） |
 | `statistics.stdev` | `Stdev` |
 | `statistics.pstdev` | `Pstdev` |
+| `statistics.fmean` | `Fmean` |
+| `statistics.quantiles` | `Quantiles`（exclusive 方法） |
+| `statistics.geometric_mean` | `Geometric_mean` |
+| `statistics.harmonic_mean` | `Harmonic_mean` |
 
 ## DIFF
 
 - 返回值统一为 `float64`；Python 对部分输入返回 `Fraction`。
 - `Mode` 并列时按 `fmt.Sprint` 排序取第一个；Python 3.8+ 返回首个遇到的值。
 - 空输入、样本方差只有一个数据点时返回 error；Python 抛 `StatisticsError`。
-- 不提供 `quantiles`、`fmean`、`geometric_mean`、`harmonic_mean`、`covariance` 等长尾函数。
+- `Quantiles` 只实现 `method="exclusive"`（Python 默认）；`inclusive` 未提供。
+- 不提供 `covariance`、`correlation`、`linear_regression` 等长尾函数。

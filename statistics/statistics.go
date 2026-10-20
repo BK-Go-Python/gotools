@@ -136,3 +136,76 @@ func toFloats[S ~[]E, E Number](data S) []float64 {
 	}
 	return values
 }
+
+// Fmean 等价于 Python 的 statistics.fmean(data)：始终返回 float64 平均值。
+func Fmean[S ~[]E, E Number](data S) (float64, error) {
+	return Mean(data)
+}
+
+// Quantiles 等价于 Python 的 statistics.quantiles(data, n=4)：
+// 返回 n-1 个切点，使用 exclusive 方法。
+func Quantiles[S ~[]E, E Number](data S, n int) ([]float64, error) {
+	if n < 1 {
+		return nil, fmt.Errorf("statistics.Quantiles: n must be at least 1")
+	}
+	if len(data) < 2 {
+		return nil, fmt.Errorf("statistics.Quantiles: need at least two data points")
+	}
+	values := toFloats(data)
+	sort.Float64s(values)
+	m := float64(len(values) + 1)
+	out := make([]float64, 0, n-1)
+	for i := 1; i < n; i++ {
+		position := float64(i) * m / float64(n)
+		lower := int(math.Floor(position)) - 1
+		fraction := position - math.Floor(position)
+		if lower < 0 {
+			lower = 0
+			fraction = 0
+		}
+		if lower >= len(values)-1 {
+			out = append(out, values[len(values)-1])
+			continue
+		}
+		out = append(out, values[lower]+fraction*(values[lower+1]-values[lower]))
+	}
+	return out, nil
+}
+
+// Geometric_mean 等价于 Python 的 statistics.geometric_mean(data)。
+func Geometric_mean[S ~[]E, E Number](data S) (float64, error) {
+	if len(data) == 0 {
+		return 0, fmt.Errorf("statistics.Geometric_mean: empty data")
+	}
+	sumLog := 0.0
+	for _, value := range data {
+		v := float64(value)
+		if v < 0 {
+			return 0, fmt.Errorf("statistics.Geometric_mean: negative value")
+		}
+		if v == 0 {
+			return 0, nil
+		}
+		sumLog += math.Log(v)
+	}
+	return math.Exp(sumLog / float64(len(data))), nil
+}
+
+// Harmonic_mean 等价于 Python 的 statistics.harmonic_mean(data)。
+func Harmonic_mean[S ~[]E, E Number](data S) (float64, error) {
+	if len(data) == 0 {
+		return 0, fmt.Errorf("statistics.Harmonic_mean: empty data")
+	}
+	sum := 0.0
+	for _, value := range data {
+		v := float64(value)
+		if v < 0 {
+			return 0, fmt.Errorf("statistics.Harmonic_mean: negative value")
+		}
+		if v == 0 {
+			return 0, nil
+		}
+		sum += 1 / v
+	}
+	return float64(len(data)) / sum, nil
+}

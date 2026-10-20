@@ -60,3 +60,32 @@ func TestVarianceStdev(t *testing.T) {
 		t.Fatal("Pvariance empty should error")
 	}
 }
+
+func TestExtendedStatistics(t *testing.T) {
+	if got, err := Fmean([]int{1, 2, 3}); err != nil || got != 2 {
+		t.Fatalf("Fmean = (%v,%v)", got, err)
+	}
+	quantiles, err := Quantiles([]int{1, 2, 3, 4}, 4)
+	if err != nil || len(quantiles) != 3 ||
+		!closeTo(quantiles[0], 1.25) || !closeTo(quantiles[1], 2.5) || !closeTo(quantiles[2], 3.75) {
+		t.Fatalf("Quantiles = (%v,%v)", quantiles, err)
+	}
+	if _, err := Quantiles([]int{1}, 4); err == nil {
+		t.Fatal("Quantiles needs two points")
+	}
+	if got, err := Geometric_mean([]int{1, 4, 16}); err != nil || !closeTo(got, 4) {
+		t.Fatalf("Geometric_mean = (%v,%v)", got, err)
+	}
+	if got, err := Geometric_mean([]int{0, 4}); err != nil || got != 0 {
+		t.Fatalf("Geometric_mean zero = (%v,%v)", got, err)
+	}
+	if _, err := Geometric_mean([]int{-1, 4}); err == nil {
+		t.Fatal("Geometric_mean negative should error")
+	}
+	if got, err := Harmonic_mean([]int{1, 4, 4}); err != nil || !closeTo(got, 2) {
+		t.Fatalf("Harmonic_mean = (%v,%v)", got, err)
+	}
+	if got, err := Harmonic_mean([]int{0, 4}); err != nil || got != 0 {
+		t.Fatalf("Harmonic_mean zero = (%v,%v)", got, err)
+	}
+}

@@ -197,3 +197,75 @@ func FindAllStringSubmatch(pattern, s string) ([][]string, error) {
 	}
 	return compiled.FindAllStringSubmatch(s, -1), nil
 }
+
+// SubexpNames 返回捕获组名称；未命名组为空字符串，下标与 FindStringSubmatch 对齐。
+func (r *Regexp) SubexpNames() []string {
+	if r == nil {
+		return nil
+	}
+	return r.expr.SubexpNames()
+}
+
+// FindStringSubmatchMap 返回命名分组的 map；未匹配的命名分组值为空字符串。
+func (r *Regexp) FindStringSubmatchMap(s string) map[string]string {
+	groups := r.FindStringSubmatch(s)
+	if groups == nil {
+		return nil
+	}
+	names := r.SubexpNames()
+	result := make(map[string]string)
+	for i, name := range names {
+		if i == 0 || name == "" {
+			continue
+		}
+		if i < len(groups) {
+			result[name] = groups[i]
+		} else {
+			result[name] = ""
+		}
+	}
+	return result
+}
+
+// FindAllStringSubmatchMap 返回所有匹配的命名分组 map；n<0 表示全部。
+func (r *Regexp) FindAllStringSubmatchMap(s string, n int) []map[string]string {
+	all := r.FindAllStringSubmatch(s, n)
+	if all == nil {
+		return nil
+	}
+	names := r.SubexpNames()
+	out := make([]map[string]string, 0, len(all))
+	for _, groups := range all {
+		result := make(map[string]string)
+		for i, name := range names {
+			if i == 0 || name == "" {
+				continue
+			}
+			if i < len(groups) {
+				result[name] = groups[i]
+			} else {
+				result[name] = ""
+			}
+		}
+		out = append(out, result)
+	}
+	return out
+}
+
+// FindStringSubmatchMap 等价于 Python 的 match.groupdict()。
+func FindStringSubmatchMap(pattern, s string) (map[string]string, error) {
+	compiled, err := Compile(pattern)
+	if err != nil {
+		return nil, err
+	}
+	return compiled.FindStringSubmatchMap(s), nil
+}
+
+// FindAllStringSubmatchMap 返回所有匹配的命名分组 map。
+func FindAllStringSubmatchMap(pattern, s string) ([]map[string]string, error) {
+	compiled, err := Compile(pattern)
+	if err != nil {
+		return nil, err
+	}
+	return compiled.FindAllStringSubmatchMap(s, -1), nil
+}
