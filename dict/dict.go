@@ -228,7 +228,33 @@ func (d Dict) GetPath(path string, def ...interface{}) interface{} {
 			}
 			current = node[idx]
 		default:
-			return defaultValue(def)
+			// 支持命名切片（如 list.List）和任意 string 键 map。
+			rv := reflect.ValueOf(current)
+			for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
+				if rv.IsNil() {
+					return defaultValue(def)
+				}
+				rv = rv.Elem()
+			}
+			switch rv.Kind() {
+			case reflect.Map:
+				if rv.Type().Key().Kind() != reflect.String {
+					return defaultValue(def)
+				}
+				value := rv.MapIndex(reflect.ValueOf(part).Convert(rv.Type().Key()))
+				if !value.IsValid() {
+					return defaultValue(def)
+				}
+				current = value.Interface()
+			case reflect.Slice, reflect.Array:
+				idx, err := strconv.Atoi(part)
+				if err != nil || idx < 0 || idx >= rv.Len() {
+					return defaultValue(def)
+				}
+				current = rv.Index(idx).Interface()
+			default:
+				return defaultValue(def)
+			}
 		}
 	}
 	return current

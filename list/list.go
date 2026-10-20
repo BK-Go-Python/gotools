@@ -151,12 +151,7 @@ func (l List) Set(index int, value interface{}) error {
 
 // Index 等价于 Python 的 list.index(value)，返回第一个相等元素的下标。
 func (l List) Index(value interface{}) (int, error) {
-	for i, item := range l {
-		if pyval.Equal(item, value) {
-			return i, nil
-		}
-	}
-	return -1, fmt.Errorf("list: %s is not in list", pyval.Repr(value))
+	return l.IndexRange(value, 0, len(l))
 }
 
 // Count 等价于 Python 的 list.count(value)。
@@ -198,25 +193,11 @@ func (l *List) Sort(less ...func(a, b interface{}) bool) *List {
 	return l
 }
 
-// SortBy 等价于 Python 的 list.sort(key=...)（可选 reverse）。
+// SortBy 等价于 Python 的 list.sort(key=..., reverse=...)。
+//
+// key 对每个元素只调用一次，排序稳定；内部委托给 SortKey。
 func (l *List) SortBy(key func(interface{}) interface{}, reverse ...bool) *List {
-	desc := len(reverse) > 0 && reverse[0]
-	sort.SliceStable(*l, func(i, j int) bool {
-		a, b := key((*l)[i]), key((*l)[j])
-		c, err := pyval.Compare(a, b)
-		if err != nil {
-			sa, sb := pyval.Repr(a), pyval.Repr(b)
-			if desc {
-				return sa > sb
-			}
-			return sa < sb
-		}
-		if desc {
-			return c > 0
-		}
-		return c < 0
-	})
-	return l
+	return l.SortKey(key, reverse...)
 }
 
 // Slice 等价于 Python 的 l[start:end]，支持负数下标，越界自动截断。
