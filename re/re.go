@@ -161,3 +161,39 @@ func Split(pattern, s string, maxsplit ...int) ([]string, error) {
 func QuoteMeta(s string) string {
 	return stdre.QuoteMeta(s)
 }
+
+// FindStringSubmatch 返回第一个匹配及其分组；未匹配返回 nil。
+//
+// 下标 0 是整体匹配，1..n 是捕获组，语义与 Python 的 match.group(0..n) 一致。
+func (r *Regexp) FindStringSubmatch(s string) []string {
+	if r == nil {
+		return nil
+	}
+	return r.expr.FindStringSubmatch(s)
+}
+
+// FindAllStringSubmatch 返回所有匹配及分组；n<0 表示全部。
+func (r *Regexp) FindAllStringSubmatch(s string, n int) [][]string {
+	if r == nil {
+		return nil
+	}
+	return r.expr.FindAllStringSubmatch(s, n)
+}
+
+// FindStringSubmatch 等价于 Python 的 re.search(pattern, s).groups() 加整体匹配。
+func FindStringSubmatch(pattern, s string) ([]string, error) {
+	compiled, err := Compile(pattern)
+	if err != nil {
+		return nil, err
+	}
+	return compiled.FindStringSubmatch(s), nil
+}
+
+// FindAllStringSubmatch 等价于 Python 的 re.findall(pattern, s) 的分组形式。
+func FindAllStringSubmatch(pattern, s string) ([][]string, error) {
+	compiled, err := Compile(pattern)
+	if err != nil {
+		return nil, err
+	}
+	return compiled.FindAllStringSubmatch(s, -1), nil
+}

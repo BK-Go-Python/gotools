@@ -15,7 +15,9 @@ parts, err := re.Split(`\s+`, "a b  c", 1)
 | `re.match` | `re.Match`（只匹配开头） |
 | `re.fullmatch` | `re.FullMatch` |
 | `re.search` | `re.Search` |
-| `re.findall` | `re.FindAll`（只返回整体匹配） |
+| `re.findall`（无分组） | `re.FindAll`（只返回整体匹配） |
+| `re.findall`（有分组） | `re.FindAllStringSubmatch` |
+| `match.group(0..n)` | `re.FindStringSubmatch` / `Regexp.FindStringSubmatch` |
 | `re.search(...).group(0)` | `re.FindString` |
 | `re.sub` | `re.Sub` |
 | `re.split` | `re.Split` |
@@ -26,6 +28,6 @@ parts, err := re.Split(`\s+`, "a b  c", 1)
 
 - Go RE2 不支持回溯引用、lookahead/lookbehind、条件表达式；依赖这些语法的 Python 正则需要重写。
 - 替换模板使用 Go 的 `$1`、`${name}`，不是 Python 的 `\1`。
-- `FindAll` 只返回整体匹配；需要分组时使用 `regexp` 包的 `FindAllStringSubmatch`。
+- `FindAll` 只返回整体匹配；需要分组时用 `FindAllStringSubmatch`（下标 0 是整体，1..n 是分组）。
 - `re.Match`/`Search` 返回 bool；需要匹配文本时用 `FindString` 或 `Compile` 后的方法。
 - Python 的 `re.MULTILINE`/`DOTALL` 等标志用 `(?m)`/`(?s)` 内联表达。

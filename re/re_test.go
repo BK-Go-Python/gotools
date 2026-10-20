@@ -75,3 +75,27 @@ func TestQuoteMeta(t *testing.T) {
 		t.Fatalf("QuoteMeta = %q", quoted)
 	}
 }
+
+func TestSubmatch(t *testing.T) {
+	groups, err := FindStringSubmatch(`(\w+)@(\w+)`, "mail: tom@example")
+	if err != nil || len(groups) != 3 || groups[1] != "tom" || groups[2] != "example" {
+		t.Fatalf("FindStringSubmatch = (%v,%v)", groups, err)
+	}
+	if groups, err := FindStringSubmatch(`(\d+)`, "abc"); err != nil || groups != nil {
+		t.Fatalf("missing submatch = (%v,%v)", groups, err)
+	}
+	all, err := FindAllStringSubmatch(`(\w+)=(\d+)`, "a=1 b=2")
+	if err != nil || len(all) != 2 || all[1][1] != "b" || all[1][2] != "2" {
+		t.Fatalf("FindAllStringSubmatch = (%v,%v)", all, err)
+	}
+	compiled, err := Compile(`(a)(b)`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := compiled.FindStringSubmatch("zab"); len(got) != 3 || got[1] != "a" || got[2] != "b" {
+		t.Fatalf("compiled submatch = %v", got)
+	}
+	if got := compiled.FindAllStringSubmatch("abab", -1); len(got) != 2 {
+		t.Fatalf("compiled submatch all = %v", got)
+	}
+}
