@@ -126,7 +126,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/env.md`](docs/env.md)，CSV 见
 [`docs/csv.md`](docs/csv.md)，日期对象见
 [`docs/datetime.md`](docs/datetime.md)，命令执行见
-[`docs/subprocess.md`](docs/subprocess.md)。
+[`docs/subprocess.md`](docs/subprocess.md)，文件操作见
+[`docs/file.md`](docs/file.md)。
 
 ### 命名约定
 
