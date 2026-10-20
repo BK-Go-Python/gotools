@@ -101,6 +101,9 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 - [`docs/unsupported-interpreter.md`](docs/unsupported-interpreter.md)
 - [`docs/unsupported-protocol.md`](docs/unsupported-protocol.md)
 
+常用类型方法（str/list/dict/set/int/float/bytes）的逐项对照见
+[`docs/type-methods.md`](docs/type-methods.md)。
+
 ### 命名约定
 
 - Python 名已被动态版占用时，泛型版本加 `Of` 后缀：
