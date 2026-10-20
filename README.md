@@ -36,6 +36,7 @@ go get github.com/BK-Go-Python/gotools
 | `env` | `os.environ` 风格：Get/Set/Unset/Has/All/Expand |
 | `csv` | `Read`/`Write`/`ReadFile`/`WriteFile`/`ReadDicts` |
 | `datetime` | `Date`/`DateTime`/`Timedelta` 对象式 API |
+| `urllib` | `Quote`/`Unquote`/`QuotePlus`/`Encode`/`ParseQuery`/`Join` |
 | `subprocess` | `Run`/`CheckOutput`/`CheckCall`/`RunShell`（命令执行） |
 | `itertools` | `Chain`、`Islice`、`Repeat`、`Cycle`、`Product`、`Combinations`、`Permutations`、`Groupby` 等 |
 | `py` | Python 内置函数：len/range/zip/enumerate/map/filter/sorted/sum/min/max/abs/round/format/hash/print/input 等 |
@@ -127,7 +128,8 @@ fmt.Println(gotime.Strftime(t, "%Y年%m月%d日 %H:%M"))
 [`docs/csv.md`](docs/csv.md)，日期对象见
 [`docs/datetime.md`](docs/datetime.md)，命令执行见
 [`docs/subprocess.md`](docs/subprocess.md)，文件操作见
-[`docs/file.md`](docs/file.md)。
+[`docs/file.md`](docs/file.md)，URL 工具见
+[`docs/urllib.md`](docs/urllib.md)。
 
 ### 命名约定
 
@@ -166,7 +168,7 @@ gofmt -l str list dict set py conv time hash file internal
 
 ```
 gotools/
-├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ subprocess/ py/ conv/ time/ hash/ file/
+├── str/ list/ dict/ set/ collections/ bytearray/ itertools/ functools/ json/ pathlib/ random/ re/ statistics/ env/ csv/ datetime/ urllib/ subprocess/ py/ conv/ time/ hash/ file/
 ├── internal/pyval/      # 内部值语义（truthiness/len/iter/compare/repr）
 ├── docs/                # 不可模拟函数的说明
 ├── go.mod
