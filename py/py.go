@@ -224,14 +224,19 @@ func Pow(x, y float64) float64 {
 	return math.Pow(x, y)
 }
 
-// Sum 等价于 Python 的 sum(iterable)，以 float64 返回。
-func Sum(iterable interface{}) (float64, error) {
+// SumAny 是动态版 sum(iterable)：接受任意可迭代对象，以 float64 返回。
+//
+// 新代码优先使用泛型 Sum，后者能保持元素类型；只有在处理 []any、map
+// 等异构/非切片可迭代对象时才需要 SumAny。
+//
+// Python: sum(iterable)
+func SumAny(iterable interface{}) (float64, error) {
 	items := mustIter(iterable)
 	total := 0.0
 	for _, item := range items {
 		f, ok := numericFloat(item)
 		if !ok {
-			return 0, fmt.Errorf("py.Sum(): unsupported operand type %s", pyval.TypeName(item))
+			return 0, fmt.Errorf("py.SumAny(): unsupported operand type %s", pyval.TypeName(item))
 		}
 		total += f
 	}

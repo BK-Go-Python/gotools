@@ -22,14 +22,14 @@ func benchmarkInts(n int) []int {
 	return seq
 }
 
-func BenchmarkSumOf(b *testing.B) {
+func BenchmarkSum(b *testing.B) {
 	seq := benchmarkInts(1024)
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	var total int
 	for i := 0; i < b.N; i++ {
-		total = py.SumOf(seq)
+		total = py.Sum(seq)
 	}
 	benchmarkSumSink = total
 }

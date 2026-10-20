@@ -55,7 +55,7 @@ func main() {
 
     fmt.Println(py.Range(5))                       // [0 1 2 3 4]
     fmt.Println(py.MapOf([]int{1, 2, 3}, func(v int) int { return v * 2 })) // [2 4 6]
-    fmt.Println(py.SumOf([]int{1, 2, 3}))          // 6
+    fmt.Println(py.Sum([]int{1, 2, 3}))          // 6
 
     s := set.New(1, 2, 3).Union(set.New(3, 4))
     fmt.Println(s.Len())                           // 4
@@ -115,7 +115,7 @@ gotools 的约定是：**只把首字母大写，其余保持 Python 拼写**（
 Python 拼写。
 
 - Python 名已被动态版占用时，泛型版本加 `Of` 后缀：
-  `SumOf/MinOf/MaxOf/SortedOf/MapOf/FilterOf/EnumerateOf/ReversedOf/DivModOf`。
+  `MinOf/MaxOf/SortedOf/MapOf/FilterOf/EnumerateOf/ReversedOf/DivModOf`。
 - 变参类型参数无法表达时用固定元数：`Zip2`/`Zip3`。
 - 动态版保留 Python 语义；泛型版是类型安全的快速路径，不改变旧 API。
 

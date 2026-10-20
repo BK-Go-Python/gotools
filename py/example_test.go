@@ -19,9 +19,9 @@ func ExampleRange() {
 	// [5 4 3 2 1]
 }
 
-func ExampleSumOf() {
-	fmt.Println(py.SumOf([]int{1, 2, 3, 4}))
-	fmt.Println(py.SumOf([]float64{1.5, 2.5}))
+func ExampleSum() {
+	fmt.Println(py.Sum([]int{1, 2, 3, 4}))
+	fmt.Println(py.Sum([]float64{1.5, 2.5}))
 	// Output:
 	// 10
 	// 4

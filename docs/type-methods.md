@@ -192,7 +192,7 @@ fmt.Println(items) // [1 2 3]
 Python 的 `int` 是任意精度整数，运算结果会自动扩展；Go 的 `int`、`int64`、`uint64` 是定宽整数，普通算术溢出会静默回绕。`gotools` 没有用 `math/big` 替换所有整数 API，因此需要区分两类情况：
 
 - **转换路径会报错**：`conv.Int`、`conv.Int64` 对超出目标范围的字符串/浮点数返回 `error`，不会截断；`conv.Uint64` 拒绝负数。
-- **算术路径可能溢出**：`py.Abs` 对最小整数取负会溢出（GoDoc 已注明）；`py.Sum` 统一以 `float64` 累加，大整数会丢精度；`py.SumOf[T]` 在 `T` 中累加，溢出时按 Go 规则回绕；`py.Pow` 使用 `math.Pow`，本身是浮点运算。
+- **算术路径可能溢出**：`py.Abs` 对最小整数取负会溢出（GoDoc 已注明）；`py.SumAny` 统一以 `float64` 累加，大整数会丢精度；`py.Sum[S ~[]E, E Number]` 在 `E` 中累加，溢出时按 Go 规则回绕；`py.Pow` 使用 `math.Pow`，本身是浮点运算。
 - **位运算只支持定宽类型**：`py.BitLength` 覆盖 int/uint 系列，不接受 `big.Int`；Python 的 `int.bit_length()` 可用于任意大整数。
 - **字节转换同样受限**：`conv.IntToBytes`/`IntFromBytes` 以 int64 和 1–8 字节为边界，不能像 Python 那样处理任意精度、任意长度的整数。
 

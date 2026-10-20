@@ -6,6 +6,26 @@ import (
 	"testing"
 )
 
+type namedIntSlice []int
+
+func TestSumGeneric(t *testing.T) {
+	if got := Sum([]int{1, 2, 3}); got != 6 {
+		t.Fatalf("Sum([]int) = %d", got)
+	}
+	if got := Sum([]float64{1.5, 2.5}); got != 4 {
+		t.Fatalf("Sum([]float64) = %v", got)
+	}
+	if got := Sum(namedIntSlice{4, 5}); got != 9 {
+		t.Fatalf("Sum(named slice) = %d", got)
+	}
+	if got := Sum([]int{}); got != 0 {
+		t.Fatalf("Sum(empty) = %d", got)
+	}
+	if got, err := SumAny([]any{1, 2.5}); err != nil || got != 3.5 {
+		t.Fatalf("SumAny hetero = (%v,%v)", got, err)
+	}
+}
+
 func TestSumOf(t *testing.T) {
 	if got := SumOf([]int{1, 2, 3}); got != 6 {
 		t.Fatalf("SumOf ints = %d, want 6", got)
@@ -70,8 +90,11 @@ func TestExistingAggregates(t *testing.T) {
 	if got := Sorted([]int{3, 1, 2}).Join(","); got != "1,2,3" {
 		t.Fatalf("Sorted = %q, want 1,2,3", got)
 	}
-	if got, err := Sum([]int{1, 2, 3}); err != nil || got != 6 {
-		t.Fatalf("Sum = (%v,%v), want (6,nil)", got, err)
+	if got := Sum([]int{1, 2, 3}); got != 6 {
+		t.Fatalf("Sum = %v, want 6", got)
+	}
+	if got, err := SumAny([]int{1, 2, 3}); err != nil || got != 6 {
+		t.Fatalf("SumAny = (%v,%v), want (6,nil)", got, err)
 	}
 	if got, err := Min([]int{3, 1, 2}); err != nil || got != 1 {
 		t.Fatalf("Min = (%v,%v), want (1,nil)", got, err)

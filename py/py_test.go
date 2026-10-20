@@ -113,8 +113,11 @@ func TestNumericHelpers(t *testing.T) {
 	if got := Pow(2, 10); got != 1024 {
 		t.Fatalf("Pow = %v", got)
 	}
-	if got, err := Sum([]int{1, 2, 3}); err != nil || got != 6 {
-		t.Fatalf("Sum = (%v,%v)", got, err)
+	if got := Sum([]int{1, 2, 3}); got != 6 {
+		t.Fatalf("Sum = %v", got)
+	}
+	if got, err := SumAny([]int{1, 2, 3}); err != nil || got != 6 {
+		t.Fatalf("SumAny = (%v,%v)", got, err)
 	}
 	if got, err := Min([]int{3, 1, 2}); err != nil || got != 1 {
 		t.Fatalf("Min = (%v,%v)", got, err)

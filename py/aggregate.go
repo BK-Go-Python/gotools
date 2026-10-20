@@ -6,16 +6,29 @@ import (
 	"slices"
 )
 
-// SumOf 等价于 Python 的 sum(seq)，返回与元素相同的数值类型。
+// Sum 等价于 Python 的 sum(seq)，返回与元素相同的数值类型。
+//
+// 支持任意数值切片，包括命名切片类型（例如 type Ints []int）：
+//
+//	py.Sum([]int{1, 2, 3})       // 6
+//	py.Sum([]float64{1.5, 2.5})  // 4
+//	py.Sum(Ints{1, 2, 3})        // 6
 //
 // Python: sum(seq)
-// DIFF: Go 整数溢出会回绕；Python int 是任意精度。
-func SumOf[T Number](seq []T) T {
-	var total T
+// DIFF: Go 整数溢出会回绕；Python int 是任意精度。异构 []any 请使用 SumAny。
+func Sum[S ~[]E, E Number](seq S) E {
+	var total E
 	for _, value := range seq {
 		total += value
 	}
 	return total
+}
+
+// SumOf 是 Sum 的旧名字，保留用于兼容。
+//
+// Deprecated: 使用 Sum。
+func SumOf[S ~[]E, E Number](seq S) E {
+	return Sum(seq)
 }
 
 // MinOf 等价于 Python 的 min(seq)，空序列返回 ErrEmpty。
