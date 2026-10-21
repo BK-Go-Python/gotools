@@ -27,7 +27,7 @@ err = py.Catch(func() {
 | 旧 API | 安全 API | 说明 |
 |---|---|---|
 | `py.Range` | `py.RangeE` | 参数个数/step 非法返回 error |
-| `py.FloorDiv` | `py.FloorDivE` | 除零返回 `ErrZeroDivision` |
+| `py.FloorDiv` / `py.DivMod` | `py.FloorDivE` / `py.DivModE` | 除零返回 `ErrZeroDivision` |
 | `py.Mod` | `py.ModE` | 除零返回 `ErrZeroDivision` |
 | `py.Reduce` | `py.ReduceE` | 空序列无初始值返回 `ErrEmpty`；回调 panic 转 error |
 | `py.Any` / `py.All` | `py.AnyE` / `py.AllE` | 非法 iterable 返回 error |

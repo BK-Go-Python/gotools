@@ -92,6 +92,15 @@ func FloorDivE(a, b int) (int, error) {
 	return FloorDiv(a, b), nil
 }
 
+// DivModE 是 DivMod 的安全版本，除数为 0 时返回 ErrZeroDivision。
+func DivModE(a, b int) (q, r int, err error) {
+	if b == 0 {
+		return 0, 0, fmt.Errorf("py.DivModE: %w", ErrZeroDivision)
+	}
+	q, r = DivMod(a, b)
+	return q, r, nil
+}
+
 // ModE 是 Mod 的安全版本，除数为 0 时返回 ErrZeroDivision。
 func ModE(a, b int) (int, error) {
 	if b == 0 {

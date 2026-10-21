@@ -43,6 +43,12 @@ func TestSafeArithmeticAndRange(t *testing.T) {
 	if _, err := ModE(1, 0); !errors.Is(err, ErrZeroDivision) {
 		t.Fatalf("ModE = %v", err)
 	}
+	if _, _, err := DivModE(1, 0); !errors.Is(err, ErrZeroDivision) {
+		t.Fatalf("DivModE = %v", err)
+	}
+	if q, r, err := DivModE(-7, 3); err != nil || q != -3 || r != 2 {
+		t.Fatalf("DivModE = (%d,%d,%v)", q, r, err)
+	}
 }
 
 func TestSafeDynamicAPIs(t *testing.T) {
