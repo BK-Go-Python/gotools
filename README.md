@@ -154,6 +154,20 @@ Go 的导出标识符必须以大写字母开头，所以无法提供真正小�
 - **旧名字保留为 Deprecated 别名**：如 `SumOf`、`MinOf`、`MapOf`，避免已有代码断掉。
 - **需要多个返回值的语义用 `error`**：越界、IO、解析失败不 panic。
 
+## 错误处理
+
+Go 没有 `try/except`。gotools 的原则是：**能返回 error 的 API 不 panic；历史动态 API 保持兼容，并提供安全变体。**
+
+```go
+value, err := py.Try(func() []int {
+    return py.Range(1, 2, 3, 4) // 非法参数会 panic，被 Try 转成 error
+})
+
+sum, err := py.SumAny(42)       // 非法 iterable：返回 error，不 panic
+```
+
+常用安全入口：`py.Try/Try2/Try3/Catch`、`py.RangeE`、`py.ReduceE`、`py.AnyE/AllE`、`py.ZipE`、`py.SortedAnyE`、`py.MapAnyE` 等，详见 [`docs/errors.md`](docs/errors.md)。
+
 ## 兼容性说明
 
 这是一个“Python 风格”库，不是 Python 运行时：

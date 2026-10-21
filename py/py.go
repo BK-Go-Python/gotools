@@ -231,7 +231,10 @@ func Pow(x, y float64) float64 {
 //
 // Python: sum(iterable)
 func SumAny(iterable interface{}) (float64, error) {
-	items := mustIter(iterable)
+	items, err := pyval.Iter(iterable)
+	if err != nil {
+		return 0, fmt.Errorf("py.SumAny: %w: %v", ErrType, err)
+	}
 	total := 0.0
 	for _, item := range items {
 		f, ok := numericFloat(item)
@@ -262,12 +265,15 @@ func MaxAny(iterable interface{}, key ...func(interface{}) interface{}) (interfa
 }
 
 func extreme(iterable interface{}, key []func(interface{}) interface{}, wantMin bool) (interface{}, error) {
-	items := mustIter(iterable)
+	items, err := pyval.Iter(iterable)
+	if err != nil {
+		return nil, fmt.Errorf("py.MinAny/MaxAny: %w: %v", ErrType, err)
+	}
 	if len(items) == 0 {
 		if wantMin {
-			return nil, fmt.Errorf("py.MinAny(): arg is an empty sequence")
+			return nil, fmt.Errorf("py.MinAny: %w", ErrEmpty)
 		}
-		return nil, fmt.Errorf("py.MaxAny(): arg is an empty sequence")
+		return nil, fmt.Errorf("py.MaxAny: %w", ErrEmpty)
 	}
 	best := items[0]
 	bestKey := best
